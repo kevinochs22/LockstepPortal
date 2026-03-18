@@ -1,20 +1,5 @@
-# netlify.toml
-# Place this in the ROOT of your repo (same level as package.json)
-
 [build]
-  # Tells Netlify where your functions live
   functions = "netlify/functions"
 
 [functions]
-  # Bundles node_modules into each function automatically
   node_bundler = "esbuild"
-
-# ─── SCHEDULED FUNCTION ─────────────────────────────────────────
-# The fub-poller runs every 5 minutes automatically.
-# No separate config needed — the schedule() call in the function
-# handles it, but declaring it here makes it visible in the
-# Netlify dashboard under Functions → Scheduled.
-
-[[plugins]]
-  # No additional plugins required for scheduled functions
-  # as of Netlify CLI v17+ — schedule() in the function is enough.
