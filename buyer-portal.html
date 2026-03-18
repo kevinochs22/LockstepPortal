@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Home Buying Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:            #F0E5CC;
+    --surface:       #E2D0AE;
+    --surface-deep:  #D4BC92;
+    --border:        rgba(76,23,24,0.13);
+    --border-light:  rgba(76,23,24,0.07);
+    --text:          #4C1718;
+    --text-dim:      rgba(76,23,24,0.52);
+    --text-faint:    rgba(76,23,24,0.22);
+    --accent:        #3A7A6A;
+    --accent-dim:    #2D6558;
+    --accent-panel:  rgba(58,122,106,0.1);
+    --accent-border: rgba(58,122,106,0.3);
+    --action:        #7A5618;
+    --action-panel:  rgba(122,86,24,0.08);
+    --action-border: rgba(122,86,24,0.25);
+    --line:          rgba(58,122,106,0.35);
+    --line-inactive: rgba(76,23,24,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0;
+    background: rgba(240,229,204,0.97);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+  }
+  .brand { display: flex; align-items: center; gap: 9px; }
+  .brand-icon {
+    width: 34px; height: 34px; border-radius: 9px;
+    background: var(--accent-panel); border: 1px solid var(--accent-border);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .brand-name {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-dim);
+  }
+  .header-client {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; color: var(--text-dim); text-align: right; line-height: 1.4;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 36px 24px 28px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); font-weight: 700; margin-bottom: 10px;
+  }
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px; font-weight: 700; line-height: 1.05;
+    color: var(--text); margin-bottom: 6px;
+  }
+  .hero-tagline {
+    font-size: 15px; color: var(--text-dim); font-weight: 300; margin-bottom: 26px;
+  }
+  .progress-pills { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .pill {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 10px; text-align: center;
+  }
+  .pill.accent { background: var(--accent-panel); border-color: var(--accent-border); }
+  .pill-num { font-size: 30px; font-weight: 700; line-height: 1; margin-bottom: 4px; color: var(--text); }
+  .pill.accent .pill-num { color: var(--accent); }
+  .pill-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); font-weight: 600; }
+
+  /* ── TIMELINE WRAPPER ── */
+  .timeline-wrap { padding: 36px 24px 0; background: var(--bg); }
+  .tl-section-eyebrow {
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--text-dim); font-weight: 700; margin-bottom: 28px;
+  }
+
+  /* ── PHASE (single-leg) ── */
+  .tl-phase {
+    position: relative;
+    padding-left: 38px;
+  }
+  .tl-phase::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 18px; bottom: 0;
+    width: 2px;
+    background: var(--line-inactive);
+    border-radius: 1px;
+    transition: background 0.5s;
+  }
+  .tl-phase.ph-active::before   { background: var(--line); }
+  .tl-phase.ph-complete::before { background: var(--accent-dim); opacity: 0.4; }
+
+  .tl-phase-anchor {
+    position: absolute;
+    left: 0; top: 0;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #F0E5CC;
+    border: 2px solid var(--border);
+    transition: border-color 0.4s, background 0.4s, box-shadow 0.4s;
+  }
+  .tl-phase.ph-active   .tl-phase-anchor { border-color: var(--accent); background: var(--accent-panel); box-shadow: 0 0 10px rgba(58,122,106,0.3); }
+  .tl-phase.ph-complete .tl-phase-anchor { border-color: var(--accent-dim); background: var(--surface); }
+
+  .tl-phase-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 18px; min-height: 18px;
+  }
+  .tl-phase-name {
+    font-size: 13px; font-weight: 700; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--text-dim);
+    transition: color 0.3s;
+  }
+  .tl-phase.ph-active   .tl-phase-name { color: var(--text); }
+  .tl-phase.ph-complete .tl-phase-name { color: var(--text-faint); }
+
+  /* ── MILESTONE NODE (read-only for client) ── */
+  .tl-node {
+    position: relative;
+    padding: 0 0 12px 0;
+  }
+  .tl-node::before {
+    content: '';
+    position: absolute;
+    left: -30px; top: 6px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(76,23,24,0.1);
+    border: 2px solid var(--bg);
+    z-index: 1;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  .tl-node.ms-active::before   { background: var(--accent); box-shadow: 0 0 8px rgba(58,122,106,0.5); }
+  .tl-node.ms-done::before     { background: var(--accent-dim); }
+
+  .tl-node-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 15px;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .tl-node.ms-active .tl-node-card { background: var(--accent-panel); border-color: var(--accent-border); }
+  .tl-node.ms-done   .tl-node-card { background: rgba(58,122,106,0.05); border-color: rgba(58,122,106,0.15); }
+
+  .tl-node-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--action-panel); border: 1px solid var(--action-border);
+    border-radius: 4px; padding: 2px 8px;
+    font-size: 10px; color: var(--action); font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .tl-node-label {
+    font-size: 16px; font-weight: 500; line-height: 1.35;
+    color: var(--text); margin-bottom: 4px;
+  }
+  .tl-node.ms-done .tl-node-label {
+    color: var(--text-dim);
+    text-decoration: line-through;
+    text-decoration-color: rgba(76,23,24,0.25);
+  }
+  .tl-node-sub {
+    font-size: 11px; color: var(--text-faint); font-style: italic;
+    font-weight: 300; line-height: 1.4; margin-bottom: 4px;
+  }
+  .tl-node-status {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .s-done     { color: var(--text-faint); }
+  .s-active   { color: var(--accent); }
+  .s-upcoming { color: var(--text-faint); }
+
+  /* ── WHAT THIS MEANS ── */
+  .phase-wtm {
+    margin: 2px 0 20px;
+    background: rgba(58,122,106,0.06);
+    border: 1px solid var(--accent-border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .phase-wtm-trigger {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 14px; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  .phase-wtm-left { display: flex; align-items: center; gap: 9px; }
+  .phase-wtm-icon {
+    width: 20px; height: 20px; background: var(--accent-panel);
+    border: 1px solid var(--accent-border);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  }
+  .phase-wtm-label { font-size: 13px; font-weight: 600; color: var(--accent); }
+  .phase-wtm-chev {
+    width: 20px; height: 20px; border: 1px solid var(--accent-border);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    transition: transform 0.3s;
+  }
+  .phase-wtm.open .phase-wtm-chev { transform: rotate(45deg); }
+  .phase-wtm-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+  .phase-wtm-inner {
+    padding: 4px 14px 16px;
+    font-size: 14px; color: var(--text-dim); line-height: 1.75; font-weight: 300;
+  }
+
+  /* ── CONCURRENT SECTION ── */
+  .tl-concurrent {
+    position: relative;
+    padding-left: 38px;
+    margin-bottom: 0;
+    background: var(--bg);
+  }
+  /* Line continues through concurrent section */
+  .tl-concurrent::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--line);
+    border-radius: 1px;
+  }
+  .concurrent-anchor {
+    position: absolute;
+    left: 0; top: 0;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #F0E5CC;
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 10px rgba(58,122,106,0.3);
+    z-index: 2;
+  }
+  .concurrent-label {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); font-weight: 700;
+    margin-bottom: 14px; padding-top: 2px;
+  }
+  .concurrent-label::after {
+    content: ''; flex: 1; height: 1px;
+    background: var(--accent-border);
+  }
+  .concurrent-note {
+    font-size: 13px; color: var(--text-dim); font-style: italic;
+    font-weight: 300; line-height: 1.55; margin-bottom: 16px;
+  }
+
+  /* ── PHASE SLIDER ── */
+  .phase-slider {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 22px;
+  }
+
+  .ps-tabs {
+    display: flex;
+    background: var(--surface-deep);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .ps-tab {
+    flex: 1;
+    padding: 14px 10px;
+    text-align: center;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-dim);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    background: none; border: none;
+    transition: color 0.25s;
+    position: relative;
+    z-index: 1;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .ps-tab.active { color: var(--accent); }
+  .ps-tab-indicator {
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px 2px 0 0;
+    transition: left 0.3s ease, width 0.3s ease;
+  }
+
+  .ps-viewport { overflow: hidden; }
+  .ps-track {
+    display: flex;
+    transition: transform 0.35s ease;
+  }
+  .ps-panel {
+    flex: 0 0 100%;
+    padding: 22px 18px 8px;
+  }
+
+  /* Nodes inside slider panel — same styling, slightly tighter */
+  .ps-panel .tl-phase-name { font-size: 13px; }
+  .ps-panel .tl-node-label { font-size: 15px; }
+
+  /* The vertical line inside the slider panel — recreate tl-phase look */
+  .ps-phase-inner {
+    position: relative;
+    padding-left: 32px;
+  }
+  .ps-phase-inner::before {
+    content: '';
+    position: absolute;
+    left: 6px; top: 16px; bottom: 0;
+    width: 2px;
+    background: var(--line-inactive);
+    border-radius: 1px;
+  }
+  .ps-phase-inner.pi-active::before   { background: var(--line); }
+  .ps-phase-inner.pi-complete::before { background: var(--accent-dim); opacity: 0.4; }
+
+  .ps-anchor {
+    position: absolute;
+    left: 0; top: 0;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    transition: border-color 0.4s, background 0.4s, box-shadow 0.4s;
+  }
+  .ps-phase-inner.pi-active   .ps-anchor { border-color: var(--accent); background: var(--accent-panel); box-shadow: 0 0 8px rgba(58,122,106,0.3); }
+  .ps-phase-inner.pi-complete .ps-anchor { border-color: var(--accent-dim); }
+
+  .ps-phase-header {
+    display: flex; align-items: center;
+    min-height: 14px; margin-bottom: 16px;
+  }
+
+  /* Nodes inside ps-panel */
+  .ps-panel .tl-node::before {
+    left: -26px;
+  }
+
+  /* ── MERGE DOT ── */
+  .merge-anchor {
+    position: absolute;
+    left: 0; bottom: -9px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 10px rgba(58,122,106,0.25);
+    z-index: 2;
+  }
+
+  /* ── KEY DATES ── */
+  .section { padding: 30px 24px; border-top: 1px solid var(--border); background: var(--bg); }
+  .section-eyebrow {
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--text-dim); font-weight: 700; margin-bottom: 20px;
+  }
+  .dates-table { width: 100%; border-collapse: collapse; }
+  .dates-table th {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-dim); font-weight: 700; text-align: left;
+    padding: 0 0 12px; border-bottom: 1px solid var(--border);
+  }
+  .dates-table td {
+    padding: 13px 0; font-size: 14px; color: var(--text);
+    border-bottom: 1px solid var(--border-light); vertical-align: middle;
+  }
+  .dates-table tr:last-child td { border-bottom: none; }
+  .dates-table td:first-child { font-weight: 500; }
+  .dates-table td:nth-child(2) { color: var(--text-dim); font-size: 13px; font-weight: 300; }
+  .badge { display: inline-block; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; font-weight: 700; }
+  .badge-pending   { background: rgba(76,23,24,0.08); color: var(--text-dim); }
+  .badge-set       { background: var(--accent-panel); color: var(--accent-dim); border: 1px solid var(--accent-border); }
+  .badge-confirmed { background: rgba(58,122,106,0.18); color: var(--accent); }
+
+  /* ── YOUR ACTION ITEMS ── */
+  .action-eyebrow {
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--action); font-weight: 700; margin-bottom: 8px;
+  }
+  .action-intro {
+    font-size: 14px; color: var(--text-dim); font-weight: 300; line-height: 1.6; margin-bottom: 18px;
+  }
+  .action-card {
+    background: var(--surface);
+    border: 1px solid var(--action-border);
+    border-radius: 12px; padding: 16px;
+    margin-bottom: 10px;
+    display: flex; align-items: flex-start; gap: 14px;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .action-card.ac-done {
+    background: var(--accent-panel);
+    border-color: var(--accent-border);
+  }
+  .action-card.ac-clickable { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .action-card.ac-clickable:active { transform: scale(0.99); }
+  .ac-emoji { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+  .ac-body { flex: 1; min-width: 0; }
+  .ac-label { font-size: 16px; font-weight: 600; margin-bottom: 3px; color: var(--text); }
+  .ac-timing {
+    font-size: 11px; color: var(--action); font-weight: 700;
+    letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 5px;
+    transition: color 0.3s;
+  }
+  .action-card.ac-done .ac-timing { color: var(--accent-dim); }
+  .ac-detail { font-size: 13px; color: var(--text-dim); font-weight: 300; line-height: 1.5; }
+
+  .ac-check-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  .ac-check {
+    width: 28px; height: 28px;
+    border: 2px solid var(--action-border);
+    border-radius: 7px;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.25s;
+  }
+  .action-card.ac-done .ac-check { background: var(--accent-panel); border-color: var(--accent-border); }
+  .ac-check svg { opacity: 0; transition: opacity 0.2s; }
+  .action-card.ac-done .ac-check svg { opacity: 1; }
+  .ac-auto-note {
+    font-size: 9px; color: var(--text-faint); margin-top: 3px;
+    font-style: italic; text-align: center;
+  }
+
+  /* ── FOOTER ── */
+  footer { padding: 30px 24px 52px; background: var(--bg); }
+  .footer-card {
+    background: linear-gradient(135deg, #4C1718 0%, #3a1213 100%);
+    border-radius: 14px; padding: 28px 22px; position: relative; overflow: hidden;
+    color: white;
+  }
+  .footer-card::before {
+    content: ''; position: absolute; top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(58,122,106,0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .footer-eyebrow { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.45); font-weight: 700; margin-bottom: 8px; }
+  .footer-headline { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 18px; color: white; }
+  .footer-name { font-size: 17px; font-weight: 700; margin-bottom: 4px; color: white; }
+  .footer-phone { font-size: 15px; color: rgba(255,255,255,0.55); }
+  .footer-phone a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  .footer-tagline { margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.25); font-weight: 600; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)} }
+  .fade{animation:fadeUp 0.5s ease both}
+  .d1{animation-delay:.05s}.d2{animation-delay:.1s}.d3{animation-delay:.15s}.d4{animation-delay:.2s}.d5{animation-delay:.25s}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="fade d1">
+  <div class="brand">
+    <div class="brand-icon">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 2L14 5.5V10.5L8 14L2 10.5V5.5L8 2Z" stroke="#3A7A6A" stroke-width="1.4" stroke-linejoin="round"/>
+        <circle cx="8" cy="8" r="2" fill="#3A7A6A" opacity="0.6"/>
+      </svg>
+    </div>
+    <div class="brand-name">Home Buying Hub</div>
+  </div>
+  <div class="header-client" id="headerClient">Jack & Sarah Spencer's<br>Transaction Portal</div>
+</header>
+
+<!-- HERO -->
+<div class="hero fade d2">
+  <div class="hero-eyebrow">Transaction Status — Active</div>
+  <div class="hero-name" id="heroName">Jack & Sarah<br>Spencer</div>
+  <div class="hero-tagline">Your real-time guide from search to keys</div>
+  <div class="progress-pills">
+    <div class="pill accent"><div class="pill-num" id="doneCount">0</div><div class="pill-label">Completed</div></div>
+    <div class="pill"><div class="pill-num" id="leftCount">16</div><div class="pill-label">Remaining</div></div>
+    <div class="pill"><div class="pill-num" id="pctCount">0%</div><div class="pill-label">Progress</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ TIMELINE -->
+<div class="timeline-wrap fade d3">
+  <div class="tl-section-eyebrow">Your Journey</div>
+
+  <!-- ── PHASE 1: HOME SEARCH & PRE-OFFER ── -->
+  <div class="tl-phase" id="ph0">
+    <div class="tl-phase-anchor"></div>
+    <div class="tl-phase-header"><div class="tl-phase-name">Home Search &amp; Pre-Offer</div></div>
+
+    <div class="tl-node" data-idx="0">
+      <div class="tl-node-card">
+        <div class="tl-node-label">Buyer consultation completed</div>
+        <div class="tl-node-status s-upcoming">Upcoming</div>
+      </div>
+    </div>
+    <div class="tl-node" data-idx="1">
+      <div class="tl-node-card">
+        <div class="tl-node-label">Agency Agreement signed</div>
+        <div class="tl-node-status s-upcoming">Upcoming</div>
+      </div>
+    </div>
+    <div class="tl-node" data-idx="2">
+      <div class="tl-node-card">
+        <div class="tl-node-label">Pre-approval letter received</div>
+        <div class="tl-node-status s-upcoming">Upcoming</div>
+      </div>
+    </div>
+
+    <div class="phase-wtm" id="wtm0">
+      <div class="phase-wtm-trigger" onclick="wtm(0)">
+        <div class="phase-wtm-left">
+          <div class="phase-wtm-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1V9M1 5H9" stroke="#3A7A6A" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+          <div class="phase-wtm-label">What This Means</div>
+        </div>
+        <div class="phase-wtm-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1V9M1 5H9" stroke="#4C1718" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="phase-wtm-body" id="wtmb0">
+        <div class="phase-wtm-inner">Before an offer is written we're laying the groundwork — getting your Agency Agreement in place so we're officially in your corner, confirming your financing with a pre-approval letter, and zeroing in on the right home. The stronger this foundation, the faster and cleaner everything moves once we're under contract.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PHASE 2: OFFER & NEGOTIATION ── -->
+  <div class="tl-phase" id="ph1">
+    <div class="tl-phase-anchor"></div>
+    <div class="tl-phase-header"><div class="tl-phase-name">Offer &amp; Negotiation</div></div>
+
+    <div class="tl-node" data-idx="3">
+      <div class="tl-node-card">
+        <div class="tl-node-label">Offer submitted</div>
+        <div class="tl-node-status s-upcoming">Upcoming</div>
+      </div>
+    </div>
+    <div class="tl-node" data-idx="4">
+      <div class="tl-node-card">
+        <div class="tl-node-label">Offer accepted</div>
+        <div class="tl-node-status s-upcoming">Upcoming</div>
+      </div>
+    </div>
+    <div class="tl-node" data-idx="5">
+      <div class="tl-node-card">
+        <div class="tl-node-badge">⚡ Your Action</div>
+        <div class="tl-node-label">Earnest money delivered</div>
+        <div class="tl-node-status s-upcoming">Upcoming</div>
+      </div>
+    </div>
+
+    <div class="phase-wtm" id="wtm1">
+      <div class="phase-wtm-trigger" onclick="wtm(1)">
+        <div class="phase-wtm-left">
+          <div class="phase-wtm-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1V9M1 5H9" stroke="#3A7A6A" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+          <div class="phase-wtm-label">What This Means</div>
+        </div>
+        <div class="phase-wtm-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1V9M1 5H9" stroke="#4C1718" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="phase-wtm-body" id="wtmb1">
+        <div class="phase-wtm-inner">This is where the deal is born. We submit a written offer with our proposed price, terms, and conditions. The seller can accept, reject, or counter — we'll navigate any back-and-forth until we land on something signed. Once accepted, you'll deliver your earnest money as a good-faith deposit, and we officially go under contract.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CONCURRENT PHASES (slider) ── -->
+  <div class="tl-concurrent" id="concurrent">
+    <div class="concurrent-anchor"></div>
+
+    <div class="concurrent-label">Happens Simultaneously</div>
+    <p class="concurrent-note">Your inspector and your lender work in parallel — neither waits on the other. Use the tabs below to move between the two tracks.</p>
+
+    <!-- PHASE SLIDER -->
+    <div class="phase-slider">
+      <div class="ps-tabs" id="psTabs">
+        <button class="ps-tab active" onclick="slide(0)">Inspection &amp; Repairs</button>
+        <button class="ps-tab" onclick="slide(1)">Appraisal &amp; Lending</button>
+        <div class="ps-tab-indicator" id="psInd"></div>
+      </div>
+
+      <div class="ps-viewport">
+        <div class="ps-track" id="psTrack">
+
+          <!-- PANEL A: Inspection & Repairs -->
+          <div class="ps-panel">
+            <div class="ps-phase-inner" id="pi0">
+              <div class="ps-anchor"></div>
+              <div class="ps-phase-header"><div class="tl-phase-name">Inspection &amp; Repairs</div></div>
+
+              <div class="tl-node" data-idx="6">
+                <div class="tl-node-card">
+                  <div class="tl-node-badge">⚡ Your Action</div>
+                  <div class="tl-node-label">Inspection scheduled</div>
+                  <div class="tl-node-status s-upcoming">Upcoming</div>
+                </div>
+              </div>
+              <div class="tl-node" data-idx="7">
+                <div class="tl-node-card">
+                  <div class="tl-node-label">Inspection completed</div>
+                  <div class="tl-node-status s-upcoming">Upcoming</div>
+                </div>
+              </div>
+              <div class="tl-node" data-idx="8">
+                <div class="tl-node-card">
+                  <div class="tl-node-label">Inspection response submitted</div>
+                  <div class="tl-node-status s-upcoming">Upcoming</div>
+                </div>
+              </div>
+              <div class="tl-node" data-idx="9">
+                <div class="tl-node-card">
+                  <div class="tl-node-label">Inspection response agreed</div>
+                  <div class="tl-node-status s-upcoming">Upcoming</div>
+                </div>
+              </div>
+
+              <div class="phase-wtm" id="wtm2">
+                <div class="phase-wtm-trigger" onclick="wtm(2)">
+                  <div class="phase-wtm-left">
+                    <div class="phase-wtm-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1V9M1 5H9" stroke="#3A7A6A" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+                    <div class="phase-wtm-label">What This Means</div>
+                  </div>
+                  <div class="phase-wtm-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1V9M1 5H9" stroke="#4C1718" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+                </div>
+                <div class="phase-wtm-body" id="wtmb2">
+                  <div class="phase-wtm-inner">You'll hire a licensed inspector who walks the property roof to foundation and produces a detailed report. We review it together and decide what to raise with the seller — repairs, credits, or price adjustments. This phase gives you full visibility into the home's condition before you're committed.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANEL B: Appraisal & Lending -->
+          <div class="ps-panel">
+            <div class="ps-phase-inner" id="pi1">
+              <div class="ps-anchor"></div>
+              <div class="ps-phase-header"><div class="tl-phase-name">Appraisal &amp; Lending</div></div>
+
+              <div class="tl-node" data-idx="10">
+                <div class="tl-node-card">
+                  <div class="tl-node-label">Appraisal ordered</div>
+                  <div class="tl-node-sub">Ordered directly by your lender — we'll update this once confirmed.</div>
+                  <div class="tl-node-status s-upcoming">Upcoming</div>
+                </div>
+              </div>
+              <div class="tl-node" data-idx="11">
+                <div class="tl-node-card">
+                  <div class="tl-node-label">Appraisal completed</div>
+                  <div class="tl-node-status s-upcoming">Upcoming</div>
+                </div>
+              </div>
+              <div class="tl-node" data-idx="12">
+                <div class="tl-node-card">
+                  <div class="tl-node-label">Clear to close received</div>
+                  <div class="tl-node-status s-upcoming">Upcoming</div>
+                </div>
+              </div>
+
+              <div class="phase-wtm" id="wtm3">
+                <div class="phase-wtm-trigger" onclick="wtm(3)">
+                  <div class="phase-wtm-left">
+                    <div class="phase-wtm-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1V9M1 5H9" stroke="#3A7A6A" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+                    <div class="phase-wtm-label">What This Means</div>
+                  </div>
+                  <div class="phase-wtm-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1V9M1 5H9" stroke="#4C1718" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+                </div>
+                <div class="phase-wtm-body" id="wtmb3">
+                  <div class="phase-wtm-inner">Your lender orders an independent appraisal to confirm the home is worth what you're paying — and they manage that process entirely. Simultaneously they're finalizing your loan, verifying income, employment, and assets. Clear to Close is the green light that your financing is fully locked.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /ps-track -->
+      </div><!-- /ps-viewport -->
+    </div><!-- /phase-slider -->
+
+    <!-- Merge dot -->
+    <div class="merge-anchor" style="position:relative; left:0; bottom:0; margin-bottom: 18px; width:18px; height:18px; border-radius:50%; background:var(--bg); border:2px solid var(--accent); box-shadow:0 0 10px rgba(58,122,106,0.25);"></div>
+
+  </div><!-- /tl-concurrent -->
+
+  <!-- ── PHASE 5: TITLE & CLOSING ── -->
+  <div class="tl-phase" id="ph4" style="padding-bottom:32px;">
+    <div class="tl-phase-anchor"></div>
+    <div class="tl-phase-header"><div class="tl-phase-name">Title &amp; Closing</div></div>
+
+    <div class="tl-node" data-idx="13">
+      <div class="tl-node-card">
+        <div class="tl-node-label">Closing date confirmed</div>
+        <div class="tl-node-status s-upcoming">Upcoming</div>
+      </div>
+    </div>
+    <div class="tl-node" data-idx="14">
+      <div class="tl-node-card">
+        <div class="tl-node-label">Final walkthrough scheduled</div>
+        <div class="tl-node-status s-upcoming">Upcoming</div>
+      </div>
+    </div>
+    <div class="tl-node" data-idx="15">
+      <div class="tl-node-card">
+        <div class="tl-node-label">🎉 Keys in hand!</div>
+        <div class="tl-node-status s-upcoming">Upcoming</div>
+      </div>
+    </div>
+
+    <div class="phase-wtm" id="wtm4">
+      <div class="phase-wtm-trigger" onclick="wtm(4)">
+        <div class="phase-wtm-left">
+          <div class="phase-wtm-icon"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1V9M1 5H9" stroke="#3A7A6A" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+          <div class="phase-wtm-label">What This Means</div>
+        </div>
+        <div class="phase-wtm-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1V9M1 5H9" stroke="#4C1718" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="phase-wtm-body" id="wtmb4">
+        <div class="phase-wtm-inner">The title company confirms the property is free of any liens or ownership disputes. We lock in your closing date early, do a final walkthrough to confirm the home is exactly as agreed, and then on closing day you sign, funds transfer, and the title is officially yours. Then we hand you the keys. You're a homeowner. 🎉</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /timeline-wrap -->
+
+<!-- KEY DATES -->
+<div class="section fade d4">
+  <div class="section-eyebrow">Key Dates</div>
+  <table class="dates-table">
+    <thead><tr><th>Milestone</th><th>Date</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Agency Agreement Signed</td><td>TBD</td><td><span class="badge badge-pending">Pending</span></td></tr>
+      <tr><td>Contract Acceptance</td><td>TBD</td><td><span class="badge badge-pending">Pending</span></td></tr>
+      <tr><td>Offer Expiration</td><td>TBD</td><td><span class="badge badge-pending">Pending</span></td></tr>
+      <tr><td>Earnest Money Due</td><td>TBD</td><td><span class="badge badge-pending">Pending</span></td></tr>
+      <tr><td>Inspection</td><td>TBD</td><td><span class="badge badge-pending">Pending</span></td></tr>
+      <tr><td>Inspection Response Due</td><td>TBD</td><td><span class="badge badge-pending">Pending</span></td></tr>
+      <tr><td>Appraisal</td><td>TBD</td><td><span class="badge badge-pending">Pending</span></td></tr>
+      <tr><td>Clear to Close</td><td>TBD</td><td><span class="badge badge-pending">Pending</span></td></tr>
+      <tr><td>Closing Day</td><td>TBD</td><td><span class="badge badge-pending">Pending</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- YOUR ACTION ITEMS -->
+<div class="section fade d4">
+  <div class="action-eyebrow">Your Action Items</div>
+  <p class="action-intro">These steps require your direct involvement. Your agent will confirm each one as it's completed so you can see the progress update in real time.</p>
+
+  <!-- Earnest money — auto-synced with milestone idx 5 -->
+  <div class="action-card" id="ac-5">
+    <div class="ac-emoji">💰</div>
+    <div class="ac-body">
+      <div class="ac-label">Submit earnest money</div>
+      <div class="ac-timing">Due within 2 business days of accepted offer</div>
+      <div class="ac-detail">Wire instructions come from the title company. Your agent will confirm once received.</div>
+    </div>
+    <div class="ac-check-wrap">
+      <div class="ac-check"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="#3A7A6A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="ac-auto-note">auto</div>
+    </div>
+  </div>
+
+  <!-- Inspection scheduled — auto-synced with milestone idx 6 -->
+  <div class="action-card" id="ac-6">
+    <div class="ac-emoji">🔍</div>
+    <div class="ac-body">
+      <div class="ac-label">Schedule your inspection</div>
+      <div class="ac-timing">Must be scheduled within the inspection period</div>
+      <div class="ac-detail">Ask your agent for inspector recommendations. Typical cost is $300–$500 paid at time of service.</div>
+    </div>
+    <div class="ac-check-wrap">
+      <div class="ac-check"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="#3A7A6A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="ac-auto-note">auto</div>
+    </div>
+  </div>
+
+  <!-- Home insurance — agent-confirmed, idx 16 -->
+  <div class="action-card ac-clickable" id="ac-16" onclick="toggleAc(16)">
+    <div class="ac-emoji">🏠</div>
+    <div class="ac-body">
+      <div class="ac-label">Order homeowner's insurance</div>
+      <div class="ac-timing">Must be bound before closing</div>
+      <div class="ac-detail">Your lender requires a binder at closing. Shop early — rates vary significantly by provider.</div>
+    </div>
+    <div class="ac-check-wrap">
+      <div class="ac-check" id="acc-16"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="#3A7A6A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+  </div>
+
+  <!-- Utilities — agent-confirmed, idx 17 -->
+  <div class="action-card ac-clickable" id="ac-17" onclick="toggleAc(17)">
+    <div class="ac-emoji">⚡</div>
+    <div class="ac-body">
+      <div class="ac-label">Arrange utilities transfer</div>
+      <div class="ac-timing">Effective on closing day</div>
+      <div class="ac-detail">Contact gas, electric, water, and internet providers to transfer service into your name starting on closing day.</div>
+    </div>
+    <div class="ac-check-wrap">
+      <div class="ac-check" id="acc-17"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="#3A7A6A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="fade d5">
+  <div class="footer-card">
+    <div class="footer-eyebrow">Your Agent</div>
+    <div class="footer-headline">Have a question?<br>Reach out anytime.</div>
+    <div class="footer-name">Kevin Ochs</div>
+    <div class="footer-phone"><a href="tel:3179678405">317.967.8405</a></div>
+    <div class="footer-tagline">Your guide from search to keys.</div>
+  </div>
+</footer>
+
+<script>
+  // ─── STATE ───────────────────────────────────────
+  const TOTAL = 16;
+  const done  = new Set();
+  const acDone = new Set();
+
+  const phaseRanges = [
+    [0,  2],   // ph0
+    [3,  5],   // ph1
+    [6,  9],   // pi0 (inspection)
+    [10, 12],  // pi1 (appraisal)
+    [13, 15],  // ph4
+  ];
+  const phaseEls = ['ph0','ph1','pi0','pi1','ph4'];
+  const piClass  = [false, false, true, true, false]; // true = inner ps-phase-inner
+
+  // ─── MARK MILESTONE (called from Supabase loader — not client-clickable) ──
+  function markDone(idx) {
+    done.add(idx);
+    const el = document.querySelector(`[data-idx="${idx}"]`);
+    if (!el) return;
+    el.classList.add('ms-done');
+    el.classList.remove('ms-active');
+    const st = el.querySelector('.tl-node-status');
+    if (st) { st.textContent = 'Completed'; st.className = 'tl-node-status s-done'; }
+  }
+
+  // ─── REFRESH UI ──────────────────────────────────
+  function refresh() {
+    const count = [...done].filter(i => i < TOTAL).length;
+    document.getElementById('doneCount').textContent = count;
+    document.getElementById('leftCount').textContent = TOTAL - count;
+    document.getElementById('pctCount').textContent  = Math.round(count / TOTAL * 100) + '%';
+
+    // Reset uncompleted
+    document.querySelectorAll('.tl-node').forEach(m => {
+      const i = +m.dataset.idx;
+      if (!done.has(i)) {
+        m.classList.remove('ms-active');
+        const st = m.querySelector('.tl-node-status');
+        if (st) { st.textContent = 'Upcoming'; st.className = 'tl-node-status s-upcoming'; }
+      }
+    });
+
+    // First uncompleted = in progress
+    for (let i = 0; i < TOTAL; i++) {
+      if (!done.has(i)) {
+        const el = document.querySelector(`[data-idx="${i}"]`);
+        if (el) {
+          el.classList.add('ms-active');
+          const st = el.querySelector('.tl-node-status');
+          if (st) { st.textContent = 'In Progress'; st.className = 'tl-node-status s-active'; }
+        }
+        break;
+      }
+    }
+
+    // Phase states
+    phaseRanges.forEach(([s, e], p) => {
+      const total = e - s + 1;
+      const comp  = Array.from({length:total},(_,x)=>done.has(s+x)).filter(Boolean).length;
+      const el    = document.getElementById(phaseEls[p]);
+      if (!el) return;
+      const isInner = piClass[p];
+      el.classList.remove('ph-active','ph-complete','pi-active','pi-complete');
+      const ac = isInner ? 'pi-active'   : 'ph-active';
+      const cc = isInner ? 'pi-complete' : 'ph-complete';
+      if (comp === total)    el.classList.add(cc);
+      else if (comp > 0)     el.classList.add(ac);
+    });
+
+    // Sync dual-track action cards
+    [5, 6].forEach(idx => {
+      const card = document.getElementById('ac-' + idx);
+      if (card) card.classList.toggle('ac-done', done.has(idx));
+    });
+  }
+
+  // ─── ACTION ITEMS (client-checkable) ─────────────
+  function toggleAc(idx) {
+    const card = document.getElementById('ac-' + idx);
+    if (!card) return;
+    if (acDone.has(idx)) {
+      acDone.delete(idx);
+      card.classList.remove('ac-done');
+    } else {
+      acDone.add(idx);
+      card.classList.add('ac-done');
+    }
+  }
+
+  // ─── WHAT THIS MEANS ─────────────────────────────
+  function wtm(i) {
+    const item = document.getElementById('wtm' + i);
+    const body = document.getElementById('wtmb' + i);
+    if (!item || !body) return;
+    const isOpen = item.classList.contains('open');
+    for (let j = 0; j < 5; j++) {
+      const it = document.getElementById('wtm' + j);
+      const bd = document.getElementById('wtmb' + j);
+      if (it && bd) { it.classList.remove('open'); bd.style.maxHeight = '0'; }
+    }
+    if (!isOpen) {
+      item.classList.add('open');
+      body.style.maxHeight = body.scrollHeight + 'px';
+    }
+  }
+
+  // ─── PHASE SLIDER ────────────────────────────────
+  let activePanel = 0;
+  function slide(idx) {
+    activePanel = idx;
+    document.getElementById('psTrack').style.transform = `translateX(-${idx * 100}%)`;
+    document.querySelectorAll('.ps-tab').forEach((b, i) => b.classList.toggle('active', i === idx));
+    positionIndicator();
+  }
+
+  function positionIndicator() {
+    const tabs = document.querySelectorAll('.ps-tab');
+    const ind  = document.getElementById('psInd');
+    if (!tabs.length || !ind) return;
+    const active = tabs[activePanel];
+    ind.style.left  = active.offsetLeft + 'px';
+    ind.style.width = active.offsetWidth + 'px';
+  }
+
+  // ─── SUPABASE LOADER (wire up in production) ─────
+  async function loadPortalState() {
+    const params = new URLSearchParams(window.location.search);
+    const dealId = params.get('deal');
+    if (!dealId) { refresh(); return; }
+    // Production: fetch from Supabase, call markDone(idx) for each completed milestone
+    // const SUPABASE_URL = 'https://your-project.supabase.co';
+    // const SUPABASE_ANON_KEY = 'your-anon-key';
+    // ...
+    refresh();
+  }
+
+  // ─── INIT ─────────────────────────────────────────
+  window.addEventListener('load', () => {
+    loadPortalState();
+    setTimeout(positionIndicator, 50);
+  });
+  window.addEventListener('resize', positionIndicator);
+</script>
+</body>
+</html>
