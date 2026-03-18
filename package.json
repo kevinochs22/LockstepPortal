@@ -1,0 +1,13 @@
+{
+  "name": "ko-buyer-portal-backend",
+  "version": "1.0.0",
+  "description": "KO Buyer Portal — FUB poller + Netlify functions backend",
+  "private": true,
+  "dependencies": {
+    "@netlify/functions": "^2.6.0",
+    "@supabase/supabase-js": "^2.43.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
