@@ -473,7 +473,7 @@
   .fade{animation:fadeUp 0.5s ease both}
   .d1{animation-delay:.05s}.d2{animation-delay:.1s}.d3{animation-delay:.15s}.d4{animation-delay:.2s}.d5{animation-delay:.25s}
 </style>
-</head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head>
 <body>
 
 <!-- HEADER -->
@@ -954,15 +954,52 @@
     ind.style.width = active.offsetWidth + 'px';
   }
 
-  // ─── SUPABASE LOADER (wire up in production) ─────
+  // ─── SUPABASE LOADER ─────────────────────────────
   async function loadPortalState() {
     const params = new URLSearchParams(window.location.search);
     const dealId = params.get('deal');
     if (!dealId) { refresh(); return; }
-    // Production: fetch from Supabase, call markDone(idx) for each completed milestone
-    // const SUPABASE_URL = 'https://your-project.supabase.co';
-    // const SUPABASE_ANON_KEY = 'your-anon-key';
-    // ...
+
+    const SUPABASE_URL      = 'https://kmqpdiaddczbelrjtuiw.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_1v-WI6vEtv35xjc7ivfhbA_uKbttTn-';
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const { data: tx, error } = await sb
+      .from('transactions')
+      .select('*, milestones(*), key_dates(*)')
+      .eq('deal_id', dealId)
+      .single();
+
+    if (error || !tx) {
+      console.warn('Deal not found:', dealId);
+      refresh();
+      return;
+    }
+
+    // Update client name
+    const nameEl = document.getElementById('heroName');
+    const hdrEl  = document.getElementById('headerClient');
+    if (nameEl) nameEl.innerHTML = tx.client_name.replace('&', '&amp;');
+    if (hdrEl)  hdrEl.innerHTML  = tx.client_name + "'s<br>Transaction Portal";
+
+    // Mark completed milestones
+    tx.milestones
+      .filter(m => m.completed)
+      .forEach(m => markDone(m.milestone_idx));
+
+    // Populate key dates
+    if (tx.key_dates?.length) {
+      const rows = document.querySelectorAll('.dates-table tbody tr');
+      rows.forEach(row => {
+        const label = row.cells[0]?.textContent.trim();
+        const match = tx.key_dates.find(d => d.label === label);
+        if (match) {
+          row.cells[1].textContent = match.date_value || 'TBD';
+          row.cells[2].innerHTML = `<span class="badge badge-${match.status || 'pending'}">${match.status || 'pending'}</span>`;
+        }
+      });
+    }
+
     refresh();
   }
 
