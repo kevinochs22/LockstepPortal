@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Deal Setup — KO Portal Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0C0C0C;
+    --surface:   #141414;
+    --surface2:  #1A1A1A;
+    --surface3:  #222222;
+    --border:    rgba(255,255,255,0.07);
+    --border2:   rgba(255,255,255,0.13);
+    --white:     #ffffff;
+    --dim:       rgba(255,255,255,0.5);
+    --faint:     rgba(255,255,255,0.2);
+    --teal:      #0ABFBF;
+    --teal-p:    rgba(10,191,191,0.07);
+    --teal-b:    rgba(10,191,191,0.2);
+    --teal-glow: rgba(10,191,191,0.12);
+    --orange:    #F5A623;
+    --orange-p:  rgba(245,166,35,0.07);
+    --orange-b:  rgba(245,166,35,0.2);
+    --green:     #2ECC71;
+    --green-p:   rgba(46,204,113,0.07);
+    --green-b:   rgba(46,204,113,0.2);
+    --red:       #E74C3C;
+    --red-p:     rgba(231,76,60,0.08);
+    --purple:    #9B6DFF;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  code, pre { font-family: 'DM Mono', monospace; }
+
+  /* ── HEADER ──────────────────────────────────── */
+  .header {
+    background: linear-gradient(135deg, #0D3D3D 0%, #0C0C0C 55%);
+    border-bottom: 1px solid var(--teal-b);
+    padding: 36px 32px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(10,191,191,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .header p {
+    font-size: 13px;
+    color: var(--dim);
+    font-weight: 300;
+    max-width: 520px;
+  }
+  .header-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+  .badge.teal  { background: var(--teal-p); border-color: var(--teal-b); color: var(--teal); }
+  .badge.orange{ background: var(--orange-p);border-color: var(--orange-b);color: var(--orange);}
+  .badge.green { background: var(--green-p); border-color: var(--green-b); color: var(--green); }
+
+  /* ── LAYOUT ──────────────────────────────────── */
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── SECTION HEADERS ─────────────────────────── */
+  .sec {
+    margin-top: 44px;
+  }
+  .sec-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .sec-num {
+    width: 22px; height: 22px;
+    background: var(--teal);
+    color: #000;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .sec-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  /* ── CARD ────────────────────────────────────── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 14px;
+    padding: 24px;
+  }
+
+  /* ── FORM GRID ───────────────────────────────── */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .form-grid .span-2 { grid-column: span 2; }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .field .hint {
+    font-size: 11px;
+    color: var(--faint);
+    font-weight: 300;
+    margin-top: -2px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  select {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    width: 100%;
+  }
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  input[type="date"]:focus,
+  select:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px var(--teal-glow);
+  }
+  input::placeholder { color: var(--faint); }
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.4);
+    cursor: pointer;
+  }
+
+  /* slug preview */
+  .slug-preview {
+    background: var(--surface3);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--teal);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+  }
+  .slug-preview .slug-base { color: var(--faint); }
+
+  /* ── DATES GRID ──────────────────────────────── */
+  .dates-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .date-row {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .date-row label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .date-row input[type="date"] {
+    background: var(--surface3);
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 13px;
+  }
+
+  /* ── SUBMIT AREA ─────────────────────────────── */
+  .submit-area {
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--teal);
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    padding: 13px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: opacity 0.15s, transform 0.1s;
+    letter-spacing: 0.02em;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); opacity: 1; }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--dim);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--border2); color: var(--white); }
+
+  .submit-note {
+    font-size: 12px;
+    color: var(--faint);
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  /* ── SPINNER ─────────────────────────────────── */
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(0,0,0,0.3);
+    border-top-color: #000;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── SUCCESS STATE ───────────────────────────── */
+  #successPanel {
+    display: none;
+    margin-top: 32px;
+    background: var(--green-p);
+    border: 1px solid var(--green-b);
+    border-radius: 14px;
+    padding: 24px;
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .success-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .success-icon {
+    width: 36px; height: 36px;
+    background: var(--green);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .success-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .success-sub {
+    font-size: 13px;
+    color: var(--dim);
+    font-weight: 300;
+  }
+  .url-box {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+  }
+  .url-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--teal);
+    flex: 1;
+    word-break: break-all;
+  }
+  .btn-copy {
+    background: var(--teal-p);
+    border: 1px solid var(--teal-b);
+    color: var(--teal);
+    border-radius: 7px;
+    padding: 6px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+  .btn-copy:hover { background: rgba(10,191,191,0.15); }
+  .btn-copy.copied { color: var(--green); border-color: var(--green-b); background: var(--green-p); }
+
+  .success-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .btn-open-portal {
+    background: var(--green);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: opacity 0.15s;
+  }
+  .btn-open-portal:hover { opacity: 0.85; }
+  .btn-new-deal {
+    background: transparent;
+    color: var(--dim);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .btn-new-deal:hover { color: var(--white); }
+
+  /* ── ERROR STATE ─────────────────────────────── */
+  #errorPanel {
+    display: none;
+    margin-top: 16px;
+    background: var(--red-p);
+    border: 1px solid rgba(231,76,60,0.25);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--red);
+  }
+
+  /* ── CALLOUT ─────────────────────────────────── */
+  .callout {
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 16px 0 0;
+    border-left: 3px solid;
+    font-size: 13px;
+  }
+  .callout.orange { background: var(--orange-p); border-color: var(--orange); color: rgba(255,255,255,0.6); }
+  .callout.teal   { background: var(--teal-p);   border-color: var(--teal);   color: rgba(255,255,255,0.6); }
+  .callout-title  { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
+  .callout.orange .callout-title { color: var(--orange); }
+  .callout.teal   .callout-title { color: var(--teal); }
+
+  /* ── RESPONSIVE ──────────────────────────────── */
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .form-grid .span-2 { grid-column: span 1; }
+    .dates-grid { grid-template-columns: 1fr; }
+    .header { padding: 28px 20px 22px; }
+    .wrap { padding: 0 16px; }
+  }
+
+  /* ── DIVIDER ─────────────────────────────────── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0 0;
+  }
+
+  /* required asterisk */
+  .req { color: var(--orange); margin-left: 2px; }
+
+  /* fub id helper */
+  .fub-helper {
+    font-size: 11px;
+    color: var(--faint);
+    font-family: 'DM Mono', monospace;
+    margin-top: 4px;
+  }
+  .fub-helper span { color: var(--teal); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">KO Portal Admin</div>
+  <h1>New Deal Setup</h1>
+  <p>Fill out this form once per new client. It creates the transaction in Supabase, seeds all 18 milestone rows, and generates the ready-to-send portal URL — automatically.</p>
+  <div class="header-badges">
+    <span class="badge teal">Supabase Auto-Seed</span>
+    <span class="badge teal">18 Milestones</span>
+    <span class="badge teal">Key Dates</span>
+    <span class="badge orange">Agent Use Only</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ── SECTION 1: CORE DEAL INFO ── -->
+  <div class="sec">
+    <div class="sec-label">
+      <div class="sec-num">1</div>
+      <div class="sec-title">Client &amp; Deal Info</div>
+    </div>
+    <div class="card">
+      <div class="form-grid">
+
+        <div class="field span-2">
+          <label>Client Name <span class="req">*</span></label>
+          <input type="text" id="clientName" placeholder="e.g. Jack &amp; Sarah Spencer" autocomplete="off" oninput="onClientNameChange(this.value)" />
+          <div class="hint">Exactly as it should appear on the portal header</div>
+        </div>
+
+        <div class="field">
+          <label>FUB Person ID <span class="req">*</span></label>
+          <input type="number" id="fubPersonId" placeholder="e.g. 98765" autocomplete="off" />
+          <div class="fub-helper">Find it in the FUB URL:<br>followupboss.com/people/<span>98765</span></div>
+        </div>
+
+        <div class="field">
+          <label>Deal Slug <span class="req">*</span></label>
+          <div class="slug-preview" id="slugPreview">
+            <span class="slug-base">?deal=</span>
+            <span id="slugValue" style="color:var(--faint);font-style:italic;">auto-generated</span>
+          </div>
+          <div class="hint">Auto-generated · click to override</div>
+          <input type="text" id="dealSlug" placeholder="override-slug (optional)" autocomplete="off" oninput="onSlugOverride(this.value)" style="margin-top:6px;" />
+        </div>
+
+        <div class="field span-2">
+          <label>Property Address</label>
+          <input type="text" id="address" placeholder="e.g. 4860 David St, Indianapolis 46220" autocomplete="off" />
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 2: KEY DATES ── -->
+  <div class="sec">
+    <div class="sec-label">
+      <div class="sec-num">2</div>
+      <div class="sec-title">Key Dates <span style="font-weight:300;text-transform:none;letter-spacing:0;color:var(--faint);font-size:11px;">&nbsp;— all optional, all TBD if blank</span></div>
+    </div>
+    <div class="card">
+      <div class="dates-grid">
+        <div class="date-row">
+          <label>Agency Agreement Signed</label>
+          <input type="date" id="date_agency" />
+        </div>
+        <div class="date-row">
+          <label>Contract Acceptance</label>
+          <input type="date" id="date_contract" />
+        </div>
+        <div class="date-row">
+          <label>Offer Expiration</label>
+          <input type="date" id="date_offer_exp" />
+        </div>
+        <div class="date-row">
+          <label>Earnest Money Due</label>
+          <input type="date" id="date_earnest" />
+        </div>
+        <div class="date-row">
+          <label>Inspection</label>
+          <input type="date" id="date_inspection" />
+        </div>
+        <div class="date-row">
+          <label>Inspection Response Due</label>
+          <input type="date" id="date_inspection_resp" />
+        </div>
+        <div class="date-row">
+          <label>Appraisal</label>
+          <input type="date" id="date_appraisal" />
+        </div>
+        <div class="date-row">
+          <label>Clear to Close</label>
+          <input type="date" id="date_ctc" />
+        </div>
+        <div class="date-row">
+          <label>Closing Day</label>
+          <input type="date" id="date_closing" />
+        </div>
+      </div>
+
+      <div class="callout orange" style="margin-top:16px;">
+        <div class="callout-title">You can always update dates later</div>
+        Dates can be updated directly in Supabase at any time. The portal reflects changes instantly on next load.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SUBMIT ── -->
+  <div class="submit-area">
+    <button class="btn-primary" id="submitBtn" onclick="handleSubmit()">
+      <span>🚀</span>
+      <span>Create Portal</span>
+      <div class="spinner" id="spinner"></div>
+    </button>
+    <button class="btn-secondary" onclick="resetForm()">Clear</button>
+    <span class="submit-note">Creates transaction + seeds 18 milestones + key dates in Supabase</span>
+  </div>
+
+  <!-- ── ERROR ── -->
+  <div id="errorPanel"></div>
+
+  <!-- ── SUCCESS ── -->
+  <div id="successPanel">
+    <div class="success-header">
+      <div class="success-icon">✓</div>
+      <div>
+        <div class="success-title" id="successTitle">Portal Created</div>
+        <div class="success-sub" id="successSub">Transaction seeded. All 18 milestones initialized. Portal is live.</div>
+      </div>
+    </div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;">Portal URL — send this to client</div>
+    <div class="url-box">
+      <div class="url-text" id="portalUrl"></div>
+      <button class="btn-copy" id="copyBtn" onclick="copyUrl()">Copy</button>
+    </div>
+    <div class="success-actions">
+      <a class="btn-open-portal" id="openPortalBtn" href="#" target="_blank">↗ Open Portal</a>
+      <button class="btn-new-deal" onclick="resetForm()">+ New Deal</button>
+    </div>
+  </div>
+
+  <div class="callout teal" style="margin-top:36px;margin-bottom:16px;">
+    <div class="callout-title">How this form works</div>
+    On submit, this form POSTs to <code>/.netlify/functions/create-deal</code>. That function inserts the transaction row, seeds all 18 milestone rows, and all 9 key date rows in a single Supabase transaction. The generated portal URL is returned and displayed above.
+  </div>
+
+</div><!-- /wrap -->
+
+<script>
+  // ─── AUTO SLUG GENERATION ─────────────────────
+  let autoSlug = '';
+  let manualSlugOverride = false;
+
+  function onClientNameChange(val) {
+    if (!manualSlugOverride) {
+      autoSlug = generateSlug(val);
+      document.getElementById('slugValue').textContent = autoSlug || 'auto-generated';
+      document.getElementById('slugValue').style.color = autoSlug ? 'var(--teal)' : 'var(--faint)';
+      document.getElementById('slugValue').style.fontStyle = autoSlug ? 'normal' : 'italic';
+    }
+  }
+
+  function onSlugOverride(val) {
+    manualSlugOverride = val.trim().length > 0;
+    if (manualSlugOverride) {
+      const clean = val.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+      document.getElementById('slugValue').textContent = clean || autoSlug || 'auto-generated';
+      document.getElementById('slugValue').style.color = clean ? 'var(--orange)' : 'var(--faint)';
+    } else {
+      autoSlug = generateSlug(document.getElementById('clientName').value);
+      document.getElementById('slugValue').textContent = autoSlug || 'auto-generated';
+      document.getElementById('slugValue').style.color = autoSlug ? 'var(--teal)' : 'var(--faint)';
+      document.getElementById('slugValue').style.fontStyle = autoSlug ? 'normal' : 'italic';
+    }
+  }
+
+  function generateSlug(name) {
+    if (!name.trim()) return '';
+    const year = new Date().getFullYear();
+    // Take last word (usually last name) + year
+    const words = name.trim().split(/[\s&]+/).filter(Boolean);
+    const lastName = words[words.length - 1] || words[0];
+    const clean = lastName.toLowerCase().replace(/[^a-z0-9]/g, '');
+    return clean ? `${clean}-${year}` : '';
+  }
+
+  function getFinalSlug() {
+    const override = document.getElementById('dealSlug').value.trim();
+    if (override) {
+      return override.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+    }
+    return autoSlug;
+  }
+
+  // ─── DATE FORMATTING ──────────────────────────
+  function formatDate(val) {
+    if (!val) return null;
+    const [y, m, d] = val.split('-');
+    const months = ['January','February','March','April','May','June',
+                    'July','August','September','October','November','December'];
+    return `${months[parseInt(m)-1]} ${parseInt(d)}, ${y}`;
+  }
+
+  // ─── FORM SUBMIT ──────────────────────────────
+  async function handleSubmit() {
+    const clientName  = document.getElementById('clientName').value.trim();
+    const fubPersonId = document.getElementById('fubPersonId').value.trim();
+    const dealSlug    = getFinalSlug();
+    const address     = document.getElementById('address').value.trim();
+
+    // Basic validation
+    hideError();
+    if (!clientName)  { showError('Client Name is required.'); return; }
+    if (!fubPersonId) { showError('FUB Person ID is required.'); return; }
+    if (!dealSlug)    { showError('Could not generate a deal slug — enter the client name or type one manually.'); return; }
+    if (isNaN(parseInt(fubPersonId))) { showError('FUB Person ID must be a number.'); return; }
+
+    // Collect key dates
+    const keyDates = [
+      { label: 'Agency Agreement Signed',   dateId: 'date_agency',         order: 1 },
+      { label: 'Contract Acceptance',        dateId: 'date_contract',       order: 2 },
+      { label: 'Offer Expiration',           dateId: 'date_offer_exp',      order: 3 },
+      { label: 'Earnest Money Due',          dateId: 'date_earnest',        order: 4 },
+      { label: 'Inspection',                 dateId: 'date_inspection',     order: 5 },
+      { label: 'Inspection Response Due',    dateId: 'date_inspection_resp',order: 6 },
+      { label: 'Appraisal',                  dateId: 'date_appraisal',      order: 7 },
+      { label: 'Clear to Close',             dateId: 'date_ctc',            order: 8 },
+      { label: 'Closing Day',                dateId: 'date_closing',        order: 9 },
+    ].map(d => ({
+      label:      d.label,
+      date_value: formatDate(document.getElementById(d.dateId).value) || null,
+      status:     document.getElementById(d.dateId).value ? 'set' : 'pending',
+      sort_order: d.order
+    }));
+
+    // Build payload
+    const payload = {
+      deal_id:       dealSlug,
+      fub_person_id: parseInt(fubPersonId),
+      client_name:   clientName,
+      address:       address || null,
+      key_dates:     keyDates
+    };
+
+    // UI loading state
+    setLoading(true);
+
+    try {
+      const res = await fetch('/.netlify/functions/create-deal', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        showError(data.error || `Server error (${res.status}). Check Netlify function logs.`);
+        setLoading(false);
+        return;
+      }
+
+      // Success
+      setLoading(false);
+      showSuccess(data.portal_url, clientName, dealSlug);
+
+    } catch (err) {
+      showError('Network error — is the Netlify function deployed? ' + err.message);
+      setLoading(false);
+    }
+  }
+
+  // ─── UI HELPERS ───────────────────────────────
+  function setLoading(on) {
+    const btn     = document.getElementById('submitBtn');
+    const spinner = document.getElementById('spinner');
+    btn.disabled           = on;
+    spinner.style.display  = on ? 'block' : 'none';
+    btn.querySelector('span:first-child').textContent = on ? '' : '🚀';
+    btn.querySelector('span:nth-child(2)').textContent = on ? 'Creating...' : 'Create Portal';
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('errorPanel');
+    el.style.display = 'block';
+    el.innerHTML = '⚠️ ' + msg;
+  }
+  function hideError() {
+    document.getElementById('errorPanel').style.display = 'none';
+  }
+
+  function showSuccess(portalUrl, clientName, dealSlug) {
+    document.getElementById('successPanel').style.display  = 'block';
+    document.getElementById('successTitle').textContent    = `✓ Portal created for ${clientName}`;
+    document.getElementById('successSub').textContent      = `Deal slug: ${dealSlug} · 18 milestones seeded · Portal is live`;
+    document.getElementById('portalUrl').textContent       = portalUrl;
+    document.getElementById('openPortalBtn').href          = portalUrl;
+    document.getElementById('successPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function copyUrl() {
+    const url = document.getElementById('portalUrl').textContent;
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function resetForm() {
+    document.querySelectorAll('input').forEach(el => el.value = '');
+    document.getElementById('slugValue').textContent   = 'auto-generated';
+    document.getElementById('slugValue').style.color   = 'var(--faint)';
+    document.getElementById('slugValue').style.fontStyle = 'italic';
+    document.getElementById('successPanel').style.display = 'none';
+    document.getElementById('errorPanel').style.display   = 'none';
+    manualSlugOverride = false;
+    autoSlug = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
