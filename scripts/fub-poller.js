@@ -85,41 +85,47 @@ async function setLastPolledAt(isoString) {
 
 // ─── FETCH RECENTLY COMPLETED PORTAL TASKS FROM FUB ─────────────
 async function fetchRecentFubTasks(sinceISO) {
-  const url = `${FUB_API_BASE}/tasks?sort=updated&direction=desc&limit=200`;
+  // Get all active transactions so we know which personIds to check
+  const { data: transactions, error } = await sb
+    .from('transactions')
+    .select('fub_person_id, deal_id');
 
-  const res = await fetch(url, { headers: fubAuthHeader() });
-
-  if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`FUB API error ${res.status}: ${body}`);
+  if (error || !transactions?.length) {
+    console.log('[poller] No active transactions found');
+    return [];
   }
 
-  const data = await res.json();
-
-  // FUB returns tasks in different shapes depending on version
-  const allTasks = data.tasks || data._embedded?.tasks || [];
-
-  console.log(`[poller] FUB returned ${allTasks.length} total tasks`);
-if (allTasks.length > 0) {
-  console.log('[poller] Sample task structure:', JSON.stringify(allTasks[0], null, 2));
-}
-
   const since = new Date(sinceISO);
+  const allMatches = [];
 
- const filtered = allTasks.filter(task => {
-    const updatedAt = new Date(task.updated || task.updatedAt || 0);
-    const inWindow = updatedAt > since;
-    const isComplete = (task.isCompleted === true || task.isCompleted === 1);
-    const isPortal = TASK_MAP[task.name] !== undefined;
-    
-    if (inWindow && isComplete) {
-      console.log(`[poller] Completed task in window: name="${task.name}" isPortal=${isPortal} updated=${task.updated}`);
+  // Query FUB tasks per person — targeted, not global
+  for (const tx of transactions) {
+    const url = `${FUB_API_BASE}/tasks?personId=${tx.fub_person_id}&limit=50`;
+    const res = await fetch(url, { headers: fubAuthHeader() });
+
+    if (!res.ok) {
+      console.warn(`[poller] FUB API error for person ${tx.fub_person_id}: ${res.status}`);
+      continue;
     }
-    
-    return inWindow && isComplete && isPortal;
-  });
 
-  return filtered;
+    const data = await res.json();
+    const tasks = data.tasks || data._embedded?.tasks || [];
+
+    console.log(`[poller] Person ${tx.fub_person_id} (${tx.deal_id}): ${tasks.length} tasks`);
+
+    const matches = tasks.filter(task => {
+      const isComplete = (task.isCompleted === true || task.isCompleted === 1);
+      const isPortal = TASK_MAP[task.name] !== undefined;
+      if (isComplete && isPortal) {
+        console.log(`[poller] Found portal task: "${task.name}" completed=${task.completed}`);
+      }
+      return isComplete && isPortal;
+    });
+
+    allMatches.push(...matches);
+  }
+
+  return allMatches;
 }
 
 // ─── PROCESS A SINGLE COMPLETED TASK ────────────────────────────
