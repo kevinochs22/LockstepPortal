@@ -954,27 +954,63 @@
     ind.style.width = active.offsetWidth + 'px';
   }
 
-  // ─── SUPABASE LOADER ─────────────────────────────
-  async function loadPortalState() {
-    const params = new URLSearchParams(window.location.search);
-    const dealId = params.get('deal');
-    if (!dealId) { refresh(); return; }
+  // ─── SUPABASE CONFIG ─────────────────────────────────
+// Anon key is safe here — RLS allows public reads only
+const SUPABASE_URL     = 'https://your-project.supabase.co';
+const SUPABASE_ANON_KEY = 'your-anon-key-here';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const SUPABASE_URL      = 'https://kmqpdiaddczbelrjtuiw.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_1v-WI6vEtv35xjc7ivfhbA_uKbttTn-';
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// ─── LOAD STATE FROM SUPABASE ────────────────────────
+async function loadPortalState() {
+  const params = new URLSearchParams(window.location.search);
+  const dealId = params.get('deal');
 
-    const { data: tx, error } = await sb
-      .from('transactions')
-      .select('*, milestones(*), key_dates(*)')
-      .eq('deal_id', dealId)
-      .single();
+  if (!dealId) {
+    // No deal ID = demo mode — render empty state
+    refresh();
+    return;
+  }
 
-    if (error || !tx) {
-      console.warn('Deal not found:', dealId);
-      refresh();
-      return;
-    }
+  // Fetch transaction + milestones + key dates in one call
+  const { data: tx, error } = await sb
+    .from('transactions')
+    .select('*, milestones(*), key_dates(*, order:sort_order)')
+    .eq('deal_id', dealId)
+    .single();
+
+  if (error || !tx) {
+    console.warn('Deal not found:', dealId);
+    refresh();
+    return;
+  }
+
+  // Update client name in header + hero
+  const nameEl = document.getElementById('heroName');
+  const hdrEl  = document.getElementById('headerClient');
+  if (nameEl) nameEl.textContent = tx.client_name;
+  if (hdrEl)  hdrEl.innerHTML  = tx.client_name + "'s<br>Transaction Portal";
+
+  // Mark completed milestones
+  tx.milestones
+    .filter(m => m.completed)
+    .forEach(m => markDone(m.milestone_idx));
+
+  // Populate key dates table
+  if (tx.key_dates?.length) {
+    const rows = document.querySelectorAll('.dates-table tbody tr');
+    rows.forEach(row => {
+      const label = row.cells[0]?.textContent.trim();
+      const match = tx.key_dates.find(d => d.label === label);
+      if (match) {
+        row.cells[1].textContent = match.date_value || 'TBD';
+        row.cells[2].innerHTML =
+          `<span class="badge badge-${match.status}">${match.status}</span>`;
+      }
+    });
+  }
+
+  refresh();
+}
 
     // Update client name
     const nameEl = document.getElementById('heroName');
