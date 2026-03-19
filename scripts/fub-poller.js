@@ -100,6 +100,9 @@ async function fetchRecentFubTasks(sinceISO) {
   const allTasks = data.tasks || data._embedded?.tasks || [];
 
   console.log(`[poller] FUB returned ${allTasks.length} total tasks`);
+if (allTasks.length > 0) {
+  console.log('[poller] Sample task structure:', JSON.stringify(allTasks[0], null, 2));
+}
 
   const since = new Date(sinceISO);
 
