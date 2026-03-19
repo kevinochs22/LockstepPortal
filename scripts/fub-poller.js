@@ -107,10 +107,10 @@ if (allTasks.length > 0) {
   const since = new Date(sinceISO);
 
   const filtered = allTasks.filter(task => {
-    const updatedAt = new Date(task.updatedAt || task.updated || 0);
+    const updatedAt = new Date(task.updated || task.updatedAt || 0);
     return (
       updatedAt > since &&
-      task.isCompleted === true &&
+      (task.isCompleted === true || task.isCompleted === 1) &&
       TASK_MAP[task.name] !== undefined
     );
   });
