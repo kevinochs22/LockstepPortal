@@ -960,11 +960,6 @@ const SUPABASE_URL     = 'https://kfungkkwkckltapnkyjj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmdW5na2t3a2NrbHRhcG5reWpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5Mjc3NTcsImV4cCI6MjA4OTUwMzc1N30.TZa2NPYDgQjHlhQTUt9u9AytrtEnP1MADoHInCWbQm4';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ─── SUPABASE CONFIG ─────────────────────────────────
-// Anon key is safe here — RLS allows public reads only
-const SUPABASE_URL     = 'https://your-project.supabase.co';
-const SUPABASE_ANON_KEY = 'your-anon-key-here';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ─── LOAD STATE FROM SUPABASE ────────────────────────
 async function loadPortalState() {
