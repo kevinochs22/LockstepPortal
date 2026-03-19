@@ -106,13 +106,17 @@ if (allTasks.length > 0) {
 
   const since = new Date(sinceISO);
 
-  const filtered = allTasks.filter(task => {
+ const filtered = allTasks.filter(task => {
     const updatedAt = new Date(task.updated || task.updatedAt || 0);
-    return (
-      updatedAt > since &&
-      (task.isCompleted === true || task.isCompleted === 1) &&
-      TASK_MAP[task.name] !== undefined
-    );
+    const inWindow = updatedAt > since;
+    const isComplete = (task.isCompleted === true || task.isCompleted === 1);
+    const isPortal = TASK_MAP[task.name] !== undefined;
+    
+    if (inWindow && isComplete) {
+      console.log(`[poller] Completed task in window: name="${task.name}" isPortal=${isPortal} updated=${task.updated}`);
+    }
+    
+    return inWindow && isComplete && isPortal;
   });
 
   return filtered;
