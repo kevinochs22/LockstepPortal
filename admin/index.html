@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>New Deal Setup — KO Portal Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
     --blue:          #19469D;
@@ -19,7 +20,6 @@
     --white:         #FFFFFF;
     --bg:            #FFFFFF;
     --surface:       #F5F7FD;
-    --surface2:      #EEF2FA;
     --border:        rgba(25,70,157,0.09);
     --border2:       rgba(25,70,157,0.17);
     --text:          #0A0A0A;
@@ -32,235 +32,87 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--surface);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
-    padding-bottom: 80px;
-  }
-
+  body { background: var(--surface); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; padding-bottom: 80px; }
   code { font-family: 'DM Mono', monospace; }
 
-  /* ── HEADER ── */
-  .header {
-    background: var(--blue);
-    padding: 32px 32px 28px;
-    position: relative;
-    overflow: hidden;
-  }
-  .header::before {
-    content: '';
-    position: absolute;
-    top: -60px; right: -60px;
-    width: 280px; height: 280px;
-    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .header::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--orange);
-  }
-  .eyebrow {
-    font-size: 10px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.55);
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-  .header h1 {
-    font-size: 26px;
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 6px;
-    color: var(--white);
-  }
-  .header p {
-    font-size: 13px;
-    color: rgba(255,255,255,0.55);
-    font-weight: 300;
-    max-width: 520px;
-  }
-  .header-badges {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-top: 18px;
-  }
-  .badge {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 3px 10px;
-    border-radius: 20px;
-    border: 1px solid;
-  }
+  .header { background: var(--blue); padding: 32px 32px 28px; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: -60px; right: -60px; width: 280px; height: 280px; background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%); pointer-events: none; }
+  .header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--orange); }
+  .eyebrow { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.55); font-weight: 700; margin-bottom: 8px; }
+  .header h1 { font-size: 26px; font-weight: 700; line-height: 1.2; margin-bottom: 6px; color: var(--white); }
+  .header p { font-size: 13px; color: rgba(255,255,255,0.55); font-weight: 300; max-width: 520px; }
+  .header-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+  .badge { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; border: 1px solid; }
   .badge.white  { background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.20); color: rgba(255,255,255,0.80); }
-  .badge.orange { background: rgba(245,130,31,0.15);  border-color: rgba(245,130,31,0.40);  color: var(--orange); }
+  .badge.orange { background: rgba(245,130,31,0.15); border-color: rgba(245,130,31,0.40); color: var(--orange); }
 
-  /* ── LAYOUT ── */
   .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px; }
-
-  /* ── SECTION HEADERS ── */
   .sec { margin-top: 40px; }
   .sec-label { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-  .sec-num {
-    width: 22px; height: 22px;
-    background: var(--blue); color: var(--white);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 700; flex-shrink: 0;
-  }
-  .sec-title {
-    font-size: 11px; font-weight: 700;
-    letter-spacing: 0.10em; text-transform: uppercase;
-    color: var(--blue);
-  }
+  .sec-num { width: 22px; height: 22px; background: var(--blue); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .sec-title { font-size: 11px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--blue); }
 
-  /* ── CARD ── */
-  .card {
-    background: var(--white);
-    border: 1px solid var(--border2);
-    border-radius: 14px;
-    padding: 24px;
-    box-shadow: 0 1px 4px rgba(25,70,157,0.06);
-  }
+  .card { background: var(--white); border: 1px solid var(--border2); border-radius: 14px; padding: 24px; box-shadow: 0 1px 4px rgba(25,70,157,0.06); }
 
-  /* ── FORM GRID ── */
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .form-grid .span-2 { grid-column: span 2; }
-
   .field { display: flex; flex-direction: column; gap: 6px; }
-  .field label {
-    font-size: 11px; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--blue);
-  }
+  .field label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); }
   .field .hint { font-size: 11px; color: var(--faint); font-weight: 300; margin-top: -2px; }
 
   input[type="text"],
   input[type="number"],
-  input[type="date"] {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.15s, box-shadow 0.15s;
-    width: 100%;
+  input[type="date"],
+  select {
+    background: var(--surface); border: 1px solid var(--border2); border-radius: 8px;
+    padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 14px;
+    color: var(--text); outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s; width: 100%;
   }
-  input:focus {
-    border-color: var(--blue);
-    box-shadow: 0 0 0 3px rgba(25,70,157,0.10);
-  }
+  select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2319469D' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; cursor: pointer; }
+  select:disabled { opacity: 0.5; cursor: not-allowed; }
+  input:focus, select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(25,70,157,0.10); }
   input::placeholder { color: var(--faint); }
   input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.4); cursor: pointer; }
 
-  /* slug preview */
-  .slug-preview {
-    background: var(--blue-tint);
-    border: 1px solid var(--blue-border);
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--blue);
-    display: flex; align-items: center; gap: 8px;
-    min-height: 40px;
-  }
+  .slug-preview { background: var(--blue-tint); border: 1px solid var(--blue-border); border-radius: 8px; padding: 10px 14px; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--blue); display: flex; align-items: center; gap: 8px; min-height: 40px; }
   .slug-preview .slug-base { color: var(--faint); }
 
-  /* ── DATES GRID ── */
   .dates-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .date-row {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 14px;
-    display: flex; flex-direction: column; gap: 6px;
-  }
-  .date-row label {
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--blue);
-  }
-  .date-row input[type="date"] {
-    background: var(--white);
-    border-radius: 6px; padding: 7px 10px; font-size: 13px;
-  }
+  .date-row { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+  .date-row label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); }
+  .date-row input[type="date"] { background: var(--white); border-radius: 6px; padding: 7px 10px; font-size: 13px; }
 
-  /* ── SUBMIT ── */
   .submit-area { margin-top: 32px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-  .btn-primary {
-    background: var(--blue); color: var(--white);
-    border: none; border-radius: 10px;
-    padding: 13px 28px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px; font-weight: 700;
-    cursor: pointer;
-    display: flex; align-items: center; gap: 8px;
-    transition: opacity 0.15s, transform 0.1s;
-    letter-spacing: 0.02em;
-  }
+  .btn-primary { background: var(--blue); color: var(--white); border: none; border-radius: 10px; padding: 13px 28px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: opacity 0.15s, transform 0.1s; }
   .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
-  .btn-primary:active { transform: translateY(0); opacity: 1; }
   .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-
-  .btn-secondary {
-    background: transparent;
-    color: var(--dim);
-    border: 1px solid var(--border2);
-    border-radius: 10px;
-    padding: 12px 20px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px; font-weight: 500;
-    cursor: pointer;
-    transition: border-color 0.15s, color 0.15s;
-  }
+  .btn-secondary { background: transparent; color: var(--dim); border: 1px solid var(--border2); border-radius: 10px; padding: 12px 20px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: border-color 0.15s, color 0.15s; }
   .btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
-
   .submit-note { font-size: 12px; color: var(--faint); font-weight: 300; font-style: italic; }
 
-  /* ── SPINNER ── */
   .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── SUCCESS ── */
   #successPanel { display: none; margin-top: 32px; background: var(--green-p); border: 1px solid var(--green-b); border-radius: 14px; padding: 24px; animation: fadeIn 0.3s ease; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
   .success-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-  .success-icon { width: 36px; height: 36px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; color: white; font-weight: 700; }
+  .success-icon { width: 36px; height: 36px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 16px; flex-shrink: 0; }
   .success-title { font-size: 16px; font-weight: 700; color: var(--text); }
   .success-sub { font-size: 13px; color: var(--dim); font-weight: 300; }
-
   .url-box { background: var(--white); border: 1px solid var(--border2); border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; margin-top: 4px; }
   .url-text { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--blue); flex: 1; word-break: break-all; }
   .btn-copy { background: var(--blue-mid); border: 1px solid var(--blue-border); color: var(--blue); border-radius: 7px; padding: 6px 14px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
   .btn-copy:hover { background: rgba(25,70,157,0.15); }
   .btn-copy.copied { color: var(--green); border-color: var(--green-b); background: var(--green-p); }
-
   .success-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
   .btn-open-portal { background: var(--blue); color: white; border: none; border-radius: 8px; padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: opacity 0.15s; }
   .btn-open-portal:hover { opacity: 0.85; }
-  .btn-new-deal { background: transparent; color: var(--dim); border: 1px solid var(--border2); border-radius: 8px; padding: 9px 18px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: color 0.15s; }
+  .btn-new-deal { background: transparent; color: var(--dim); border: 1px solid var(--border2); border-radius: 8px; padding: 9px 18px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; }
   .btn-new-deal:hover { color: var(--blue); border-color: var(--blue); }
 
-  /* ── ERROR ── */
   #errorPanel { display: none; margin-top: 16px; background: rgba(217,48,37,0.06); border: 1px solid rgba(217,48,37,0.2); border-radius: 10px; padding: 14px 16px; font-size: 13px; color: var(--red); }
 
-  /* ── CALLOUT ── */
   .callout { border-radius: 10px; padding: 14px 16px; margin: 16px 0 0; border-left: 3px solid; font-size: 13px; }
   .callout.orange { background: var(--orange-mid); border-color: var(--orange); color: var(--dim); }
   .callout.blue   { background: var(--blue-mid);   border-color: var(--blue);   color: var(--dim); }
@@ -268,7 +120,6 @@
   .callout.orange .callout-title { color: var(--orange); }
   .callout.blue   .callout-title { color: var(--blue); }
 
-  /* ── RESPONSIVE ── */
   @media (max-width: 600px) {
     .form-grid { grid-template-columns: 1fr; }
     .form-grid .span-2 { grid-column: span 1; }
@@ -285,9 +136,11 @@
 <body>
 
 <div class="header">
+  <div class="eyebrow">KO Portal Admin</div>
   <h1>New Deal Setup</h1>
   <p>Fill out this form once per new client. Instantly creates the portal, seeds all 18 milestones, and drops the first 3 FUB tasks on the contact.</p>
   <div class="header-badges">
+    <span class="badge white">Supabase Auto-Seed</span>
     <span class="badge white">18 Milestones</span>
     <span class="badge white">FUB Tasks Created</span>
     <span class="badge orange">Agent Use Only</span>
@@ -296,12 +149,8 @@
 
 <div class="wrap">
 
-  <!-- SECTION 1 -->
   <div class="sec">
-    <div class="sec-label">
-      <div class="sec-num">1</div>
-      <div class="sec-title">Client &amp; Deal Info</div>
-    </div>
+    <div class="sec-label"><div class="sec-num">1</div><div class="sec-title">Client &amp; Deal Info</div></div>
     <div class="card">
       <div class="form-grid">
 
@@ -318,8 +167,16 @@
         </div>
 
         <div class="field">
+          <label>Agent <span class="req">*</span></label>
+          <select id="agentSelect" disabled>
+            <option value="">Loading agents…</option>
+          </select>
+          <div class="hint">Pulls from the shared team roster in Supabase</div>
+        </div>
+
+        <div class="field">
           <label>Deal Slug <span class="req">*</span></label>
-          <div class="slug-preview" id="slugPreview">
+          <div class="slug-preview">
             <span class="slug-base">?deal=</span>
             <span id="slugValue" style="color:var(--faint);font-style:italic;">auto-generated</span>
           </div>
@@ -327,7 +184,7 @@
           <input type="text" id="dealSlug" placeholder="custom-slug (optional)" autocomplete="off" oninput="onSlugOverride(this.value)" style="margin-top:6px;" />
         </div>
 
-        <div class="field span-2">
+        <div class="field">
           <label>Property Address</label>
           <input type="text" id="address" placeholder="e.g. 4860 David St, Indianapolis 46220" autocomplete="off" />
         </div>
@@ -336,12 +193,8 @@
     </div>
   </div>
 
-  <!-- SECTION 2 -->
   <div class="sec">
-    <div class="sec-label">
-      <div class="sec-num">2</div>
-      <div class="sec-title">Key Dates &nbsp;<span style="font-weight:300;text-transform:none;letter-spacing:0;color:var(--faint);font-size:11px;">— all optional, TBD if blank</span></div>
-    </div>
+    <div class="sec-label"><div class="sec-num">2</div><div class="sec-title">Key Dates &nbsp;<span style="font-weight:300;text-transform:none;letter-spacing:0;color:var(--faint);font-size:11px;">— all optional, TBD if blank</span></div></div>
     <div class="card">
       <div class="dates-grid">
         <div class="date-row"><label>Agency Agreement Signed</label><input type="date" id="date_agency" /></div>
@@ -356,16 +209,14 @@
       </div>
       <div class="callout orange" style="margin-top:16px;">
         <div class="callout-title">Dates can always be updated later</div>
-        Edit any date directly in Supabase at any time — the portal reflects changes instantly on next load.
+        Edit any date directly from the team dashboard — changes reflect on the portal instantly.
       </div>
     </div>
   </div>
 
-  <!-- SUBMIT -->
   <div class="submit-area">
     <button class="btn-primary" id="submitBtn" onclick="handleSubmit()">
-      <span>🚀</span>
-      <span>Create Portal</span>
+      <span>🚀</span><span>Create Portal</span>
       <div class="spinner" id="spinner"></div>
     </button>
     <button class="btn-secondary" onclick="resetForm()">Clear</button>
@@ -374,7 +225,6 @@
 
   <div id="errorPanel"></div>
 
-  <!-- SUCCESS -->
   <div id="successPanel">
     <div class="success-header">
       <div class="success-icon">✓</div>
@@ -394,9 +244,47 @@
     </div>
   </div>
 
+  <div class="callout blue" style="margin-top:36px;margin-bottom:16px;">
+    <div class="callout-title">How this works</div>
+    On submit, this form calls <code>/.netlify/functions/create-deal</code>. That function writes the transaction to Supabase, seeds all 18 milestone rows, all 9 key date rows, and creates the first 3 FUB tasks — all in one shot.
+  </div>
+
 </div>
 
 <script>
+  // ─── SUPABASE ─────────────────────────────────────
+  const SUPABASE_URL      = 'https://kfungkkwkckltapnkyjj.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmdW5na2t3a2NrbHRhcG5reWpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5Mjc3NTcsImV4cCI6MjA4OTUwMzc1N30.TZa2NPYDgQjHlhQTUt9u9AytrtEnP1MADoHInCWbQm4';
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // ─── LOAD AGENTS INTO DROPDOWN ────────────────────
+  async function loadAgents() {
+    const { data, error } = await sb
+      .from('agents')
+      .select('name')
+      .eq('active', true)
+      .order('sort_order', { ascending: true });
+
+    const sel = document.getElementById('agentSelect');
+
+    if (error || !data?.length) {
+      sel.innerHTML = '<option value="">Failed to load agents</option>';
+      return;
+    }
+
+    sel.innerHTML = '<option value="">Select agent…</option>';
+    data.forEach(agent => {
+      const opt = document.createElement('option');
+      opt.value       = agent.name;
+      opt.textContent = agent.name;
+      sel.appendChild(opt);
+    });
+    sel.disabled = false;
+  }
+
+  loadAgents();
+
+  // ─── SLUG GENERATION ─────────────────────────────
   let autoSlug = '';
   let manualSlugOverride = false;
 
@@ -430,7 +318,7 @@
     const year  = new Date().getFullYear();
     const words = name.trim().split(/[\s&]+/).filter(Boolean);
     const last  = words[words.length - 1] || words[0];
-    const clean = last.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const clean = last.toLowerCase().replace(/[^a-z0-9]/g,'');
     return clean ? `${clean}-${year}` : '';
   }
 
@@ -447,15 +335,18 @@
     return `${months[parseInt(m)-1]} ${parseInt(d)}, ${y}`;
   }
 
+  // ─── SUBMIT ───────────────────────────────────────
   async function handleSubmit() {
     const clientName  = document.getElementById('clientName').value.trim();
     const fubPersonId = document.getElementById('fubPersonId').value.trim();
+    const agentName   = document.getElementById('agentSelect').value;
     const dealSlug    = getFinalSlug();
     const address     = document.getElementById('address').value.trim();
 
     hideError();
     if (!clientName)  { showError('Client Name is required.'); return; }
     if (!fubPersonId) { showError('FUB Person ID is required.'); return; }
+    if (!agentName)   { showError('Please select an agent.'); return; }
     if (!dealSlug)    { showError('Could not generate a deal slug — enter the client name or type one manually.'); return; }
     if (isNaN(parseInt(fubPersonId))) { showError('FUB Person ID must be a number.'); return; }
 
@@ -480,6 +371,7 @@
       deal_id:       dealSlug,
       fub_person_id: parseInt(fubPersonId),
       client_name:   clientName,
+      agent_name:    agentName,
       address:       address || null,
       key_dates:     keyDates
     };
@@ -493,16 +385,9 @@
         body: JSON.stringify(payload)
       });
       const data = await res.json();
-
-      if (!res.ok || !data.ok) {
-        showError(data.error || `Server error (${res.status}). Check Netlify function logs.`);
-        setLoading(false);
-        return;
-      }
-
+      if (!res.ok || !data.ok) { showError(data.error || `Server error (${res.status}).`); setLoading(false); return; }
       setLoading(false);
       showSuccess(data.portal_url, clientName, dealSlug);
-
     } catch (err) {
       showError('Network error — is the Netlify function deployed? ' + err.message);
       setLoading(false);
@@ -510,20 +395,15 @@
   }
 
   function setLoading(on) {
-    const btn     = document.getElementById('submitBtn');
-    const spinner = document.getElementById('spinner');
-    btn.disabled          = on;
-    spinner.style.display = on ? 'block' : 'none';
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = on;
+    document.getElementById('spinner').style.display = on ? 'block' : 'none';
     btn.querySelector('span:first-child').textContent  = on ? '' : '🚀';
     btn.querySelector('span:nth-child(2)').textContent = on ? 'Creating...' : 'Create Portal';
   }
 
-  function showError(msg) {
-    const el = document.getElementById('errorPanel');
-    el.style.display = 'block';
-    el.innerHTML = '⚠️ ' + msg;
-  }
-  function hideError() { document.getElementById('errorPanel').style.display = 'none'; }
+  function showError(msg) { const el = document.getElementById('errorPanel'); el.style.display = 'block'; el.innerHTML = '⚠️ ' + msg; }
+  function hideError()    { document.getElementById('errorPanel').style.display = 'none'; }
 
   function showSuccess(portalUrl, clientName, dealSlug) {
     document.getElementById('successPanel').style.display = 'block';
@@ -535,28 +415,23 @@
   }
 
   function copyUrl() {
-    const url = document.getElementById('portalUrl').textContent;
-    navigator.clipboard.writeText(url).then(() => {
+    navigator.clipboard.writeText(document.getElementById('portalUrl').textContent).then(() => {
       const btn = document.getElementById('copyBtn');
-      btn.textContent = '✓ Copied';
-      btn.classList.add('copied');
+      btn.textContent = '✓ Copied'; btn.classList.add('copied');
       setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
   }
 
   function resetForm() {
     document.querySelectorAll('input').forEach(el => el.value = '');
+    document.getElementById('agentSelect').value = '';
     const sv = document.getElementById('slugValue');
-    sv.textContent = 'auto-generated';
-    sv.style.color = 'var(--faint)';
-    sv.style.fontStyle = 'italic';
+    sv.textContent = 'auto-generated'; sv.style.color = 'var(--faint)'; sv.style.fontStyle = 'italic';
     document.getElementById('successPanel').style.display = 'none';
     document.getElementById('errorPanel').style.display   = 'none';
-    manualSlugOverride = false;
-    autoSlug = '';
+    manualSlugOverride = false; autoSlug = '';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
-
 </body>
 </html>
