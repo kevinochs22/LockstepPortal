@@ -102,7 +102,7 @@ exports.handler = async (event) => {
   const { data: existing } = await sb
     .from('transactions')
     .select('id, deal_id, fub_person_id')
-    .or(`deal_id.eq.${safeDealId},fub_person_id.eq.${fub_person_id}`)
+    .eq('deal_id', safeDealId)
     .limit(1);
 
   if (existing?.length > 0) {
