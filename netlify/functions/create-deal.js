@@ -106,12 +106,8 @@ exports.handler = async (event) => {
     .limit(1);
 
   if (existing?.length > 0) {
-    const dup = existing[0];
-    if (dup.deal_id === safeDealId) {
-      return respond(409, { error: `Deal slug "${safeDealId}" already exists. Use a different slug.` });
-    }
-    return respond(409, { error: `FUB person ID ${fub_person_id} already has a portal transaction.` });
-  }
+  return respond(409, { error: `Deal slug "${safeDealId}" already exists. Use a different slug.` });
+}
 
   // ══════════════════════════════════════════════════════════════════
   // STEP 1 — SUPABASE: INSERT TRANSACTION + ALL 18 MILESTONES + DATES
