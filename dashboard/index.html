@@ -19,7 +19,6 @@
     --orange-border: rgba(245,130,31,0.25);
     --white:         #FFFFFF;
     --bg:            #F5F7FD;
-    --surface:       #FFFFFF;
     --border:        rgba(25,70,157,0.09);
     --border2:       rgba(25,70,157,0.17);
     --text:          #0A0A0A;
@@ -32,403 +31,155 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
-  }
-
-  /* ── PASSWORD GATE ── */
-  #gate {
-    position: fixed; inset: 0;
-    background: var(--blue);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 999;
-    padding: 24px;
-  }
-  #gate::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.06) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .gate-card {
-    background: var(--white);
-    border-radius: 16px;
-    padding: 36px 32px;
-    width: 100%; max-width: 380px;
-    position: relative;
-  }
-  .gate-logo {
-    width: 44px; height: 44px;
-    background: var(--blue);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 20px;
-  }
+  /* ── GATE ── */
+  #gate { position: fixed; inset: 0; background: var(--blue); display: flex; align-items: center; justify-content: center; z-index: 999; padding: 24px; }
+  #gate::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.06) 0%, transparent 60%); pointer-events: none; }
+  .gate-card { background: var(--white); border-radius: 16px; padding: 36px 32px; width: 100%; max-width: 380px; position: relative; }
+  .gate-logo { width: 44px; height: 44px; background: var(--blue); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
   .gate-title { font-size: 20px; font-weight: 700; color: var(--blue-dark); margin-bottom: 4px; }
   .gate-sub { font-size: 13px; color: var(--dim); font-weight: 300; margin-bottom: 24px; }
   .gate-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 6px; display: block; }
-  .gate-input {
-    width: 100%; padding: 11px 14px;
-    border: 1px solid var(--border2);
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px; color: var(--text);
-    outline: none;
-    transition: border-color 0.15s, box-shadow 0.15s;
-    background: var(--bg);
-    margin-bottom: 14px;
-  }
+  .gate-input { width: 100%; padding: 11px 14px; border: 1px solid var(--border2); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); outline: none; transition: border-color 0.15s, box-shadow 0.15s; background: var(--bg); margin-bottom: 14px; }
   .gate-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(25,70,157,0.10); }
-  .gate-btn {
-    width: 100%; padding: 12px;
-    background: var(--blue); color: var(--white);
-    border: none; border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px; font-weight: 700;
-    cursor: pointer; transition: opacity 0.15s;
-  }
+  .gate-btn { width: 100%; padding: 12px; background: var(--blue); color: var(--white); border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
   .gate-btn:hover { opacity: 0.88; }
-  .gate-error {
-    margin-top: 10px; font-size: 12px;
-    color: var(--red); text-align: center;
-    display: none;
-  }
-  .gate-hint {
-    margin-top: 14px; font-size: 11px;
-    color: var(--faint); text-align: center;
-    font-weight: 300;
-  }
+  .gate-error { margin-top: 10px; font-size: 12px; color: var(--red); text-align: center; display: none; }
+  .gate-hint { margin-top: 14px; font-size: 11px; color: var(--faint); text-align: center; font-weight: 300; }
 
   /* ── HEADER ── */
-  .header {
-    background: var(--blue);
-    padding: 0 28px;
-    display: flex; align-items: center; justify-content: space-between;
-    height: 60px;
-    position: sticky; top: 0; z-index: 100;
-  }
+  .header { background: var(--blue); padding: 0 28px; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
   .header-brand { display: flex; align-items: center; gap: 10px; }
-  .header-icon {
-    width: 30px; height: 30px;
-    background: rgba(255,255,255,0.12);
-    border-radius: 7px;
-    display: flex; align-items: center; justify-content: center;
-  }
+  .header-icon { width: 30px; height: 30px; background: rgba(255,255,255,0.12); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
   .header-title { font-size: 13px; font-weight: 700; color: var(--white); letter-spacing: 0.05em; }
-  .header-right { display: flex; align-items: center; gap: 12px; }
-  .header-nav-link {
-    font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.60);
-    text-decoration: none; padding: 6px 12px; border-radius: 6px;
-    transition: background 0.15s, color 0.15s;
-    letter-spacing: 0.04em;
-  }
-  .header-nav-link:hover { background: rgba(255,255,255,0.10); color: var(--white); }
-  .header-nav-link.active { background: rgba(255,255,255,0.15); color: var(--white); }
-  .new-deal-btn {
-    background: var(--orange); color: var(--white);
-    border: none; border-radius: 7px;
-    padding: 7px 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px; font-weight: 700;
-    cursor: pointer; text-decoration: none;
-    display: inline-flex; align-items: center; gap: 5px;
-    transition: opacity 0.15s;
-    letter-spacing: 0.03em;
-  }
+  .new-deal-btn { background: var(--orange); color: var(--white); border: none; border-radius: 7px; padding: 7px 14px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: opacity 0.15s; }
   .new-deal-btn:hover { opacity: 0.88; }
 
-  /* ── STATS BAR ── */
-  .stats-bar {
-    background: var(--white);
-    border-bottom: 1px solid var(--border);
-    padding: 0 28px;
-    display: flex; align-items: center; gap: 32px;
-    height: 56px;
-  }
-  .stat { display: flex; align-items: center; gap: 8px; }
+  /* ── STATS ── */
+  .stats-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 28px; display: flex; align-items: center; gap: 32px; height: 56px; overflow-x: auto; }
+  .stat { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
   .stat-num { font-size: 20px; font-weight: 700; color: var(--blue); }
   .stat-label { font-size: 11px; color: var(--dim); font-weight: 500; letter-spacing: 0.04em; }
-  .stat-divider { width: 1px; height: 24px; background: var(--border2); }
+  .stat-divider { width: 1px; height: 24px; background: var(--border2); flex-shrink: 0; }
+
+  /* ── FILTER BAR ── */
+  .filter-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 12px 28px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .filter-search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 380px; }
+  .filter-search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--faint); font-size: 13px; pointer-events: none; }
+  .filter-search { width: 100%; padding: 8px 12px 8px 34px; border: 1px solid var(--border2); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+  .filter-search:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(25,70,157,0.08); }
+  .filter-search::placeholder { color: var(--faint); }
+
+  .filter-agent-wrap { position: relative; }
+  .filter-agent { appearance: none; padding: 8px 32px 8px 14px; border: 1px solid var(--border2); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text); background: var(--bg); outline: none; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; min-width: 200px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2319469D' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+  .filter-agent:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(25,70,157,0.08); }
+  .filter-agent:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .filter-clear { font-size: 12px; font-weight: 600; color: var(--orange); cursor: pointer; padding: 4px 8px; border-radius: 5px; transition: background 0.15s; white-space: nowrap; display: none; background: none; border: none; font-family: 'DM Sans', sans-serif; }
+  .filter-clear:hover { background: var(--orange-mid); }
+  .filter-clear.visible { display: block; }
+  .filter-results { font-size: 12px; color: var(--dim); font-weight: 300; white-space: nowrap; margin-left: auto; }
 
   /* ── MAIN ── */
-  .main { padding: 28px; max-width: 1100px; margin: 0 auto; }
-
-  /* ── SECTION HEADER ── */
-  .section-hdr {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 16px;
-  }
+  .main { padding: 24px 28px; max-width: 1100px; margin: 0 auto; }
+  .section-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
   .section-hdr-left { display: flex; align-items: center; gap: 10px; }
-  .section-eyebrow {
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--blue);
-  }
-  .section-count {
-    background: var(--blue-mid); border: 1px solid var(--blue-border);
-    color: var(--blue); font-size: 11px; font-weight: 700;
-    padding: 2px 8px; border-radius: 20px;
-  }
+  .section-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blue); }
+  .section-count { background: var(--blue-mid); border: 1px solid var(--blue-border); color: var(--blue); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
 
   /* ── DEAL CARDS ── */
   .deals-grid { display: flex; flex-direction: column; gap: 14px; }
-
-  .deal-card {
-    background: var(--white);
-    border: 1px solid var(--border2);
-    border-radius: 14px;
-    overflow: hidden;
-    transition: box-shadow 0.2s;
-  }
+  .deal-card { background: var(--white); border: 1px solid var(--border2); border-radius: 14px; overflow: hidden; transition: box-shadow 0.2s; }
   .deal-card:hover { box-shadow: 0 4px 20px rgba(25,70,157,0.08); }
-
-  .deal-card-top {
-    padding: 18px 20px 14px;
-    display: flex; align-items: flex-start; gap: 16px;
-  }
-
-  .deal-avatar {
-    width: 42px; height: 42px;
-    background: var(--blue);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px; font-weight: 700; color: var(--white);
-    flex-shrink: 0;
-    letter-spacing: -0.02em;
-  }
-
+  .deal-card.hidden { display: none; }
+  .deal-card-top { padding: 18px 20px 14px; display: flex; align-items: flex-start; gap: 16px; }
+  .deal-avatar { width: 42px; height: 42px; background: var(--blue); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: var(--white); flex-shrink: 0; letter-spacing: -0.02em; }
   .deal-info { flex: 1; min-width: 0; }
   .deal-name { font-size: 16px; font-weight: 700; color: var(--blue-dark); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .deal-address { font-size: 12px; color: var(--dim); font-weight: 300; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .deal-slug { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--faint); margin-top: 2px; }
-
+  .deal-meta { display: flex; align-items: center; gap: 10px; margin-top: 4px; flex-wrap: wrap; }
+  .deal-slug { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--faint); }
+  .deal-agent-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: var(--blue-mid); border: 1px solid var(--blue-border); color: var(--blue); padding: 1px 8px; border-radius: 20px; }
   .deal-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-
-  .btn-icon {
-    width: 32px; height: 32px;
-    border: 1px solid var(--border2);
-    border-radius: 7px;
-    background: var(--white);
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; transition: all 0.15s;
-    color: var(--dim); font-size: 13px;
-    text-decoration: none;
-  }
+  .btn-icon { width: 32px; height: 32px; border: 1px solid var(--border2); border-radius: 7px; background: var(--white); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s; color: var(--dim); font-size: 13px; text-decoration: none; }
   .btn-icon:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-tint); }
   .btn-icon.copied { border-color: var(--green); color: var(--green); background: var(--green-p); }
-
-  .btn-open-portal {
-    background: var(--blue); color: var(--white);
-    border: none; border-radius: 7px;
-    padding: 7px 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px; font-weight: 700;
-    cursor: pointer; text-decoration: none;
-    display: inline-flex; align-items: center; gap: 5px;
-    transition: opacity 0.15s; white-space: nowrap;
-  }
+  .btn-open-portal { background: var(--blue); color: var(--white); border: none; border-radius: 7px; padding: 7px 14px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: opacity 0.15s; white-space: nowrap; }
   .btn-open-portal:hover { opacity: 0.85; }
 
-  /* ── PROGRESS BAR ── */
   .deal-progress { padding: 0 20px 14px; }
-  .progress-meta {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 6px;
-  }
+  .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
   .progress-label { font-size: 11px; color: var(--dim); font-weight: 500; }
   .progress-count { font-size: 11px; font-weight: 700; color: var(--blue); }
-  .progress-track {
-    height: 6px; background: var(--blue-tint);
-    border-radius: 3px; overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%; background: var(--blue);
-    border-radius: 3px;
-    transition: width 0.4s ease;
-    min-width: 0;
-  }
+  .progress-track { height: 6px; background: var(--blue-tint); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--blue); border-radius: 3px; transition: width 0.4s ease; }
   .progress-fill.complete { background: var(--green); }
 
-  /* ── DATES SECTION ── */
-  .deal-dates-toggle {
-    padding: 10px 20px;
-    border-top: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    user-select: none;
-    transition: background 0.15s;
-  }
+  .deal-dates-toggle { padding: 10px 20px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; transition: background 0.15s; }
   .deal-dates-toggle:hover { background: var(--bg); }
-  .deal-dates-toggle-label {
-    font-size: 11px; font-weight: 700;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--blue);
-    display: flex; align-items: center; gap: 7px;
-  }
+  .deal-dates-toggle-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); }
   .dates-chev { transition: transform 0.25s; font-size: 10px; color: var(--faint); }
   .deal-card.dates-open .dates-chev { transform: rotate(180deg); }
-
   .deal-dates-body { display: none; border-top: 1px solid var(--border); }
   .deal-card.dates-open .deal-dates-body { display: block; }
-
-  .dates-grid-inner {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-  }
-  .date-cell {
-    background: var(--white);
-    padding: 12px 16px;
-  }
-  .date-cell-label {
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--dim); margin-bottom: 5px;
-  }
-  .date-cell-val {
-    font-size: 13px; font-weight: 500; color: var(--blue-dark);
-    display: flex; align-items: center; gap: 6px;
-  }
+  .dates-grid-inner { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); }
+  .date-cell { background: var(--white); padding: 12px 16px; }
+  .date-cell-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); margin-bottom: 5px; }
+  .date-cell-val { font-size: 13px; font-weight: 500; color: var(--blue-dark); display: flex; align-items: center; gap: 6px; }
   .date-cell-val.tbd { color: var(--faint); font-weight: 300; font-style: italic; }
-
-  /* Inline date editor */
-  .date-edit-input {
-    border: 1px solid var(--blue-border);
-    border-radius: 5px;
-    padding: 4px 8px;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px; color: var(--text);
-    background: var(--blue-tint);
-    outline: none;
-    width: 100%;
-    margin-top: 4px;
-  }
+  .date-edit-input { border: 1px solid var(--blue-border); border-radius: 5px; padding: 4px 8px; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text); background: var(--blue-tint); outline: none; width: 100%; margin-top: 4px; }
   .date-edit-input:focus { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(25,70,157,0.10); }
-  .date-edit-actions {
-    display: flex; gap: 4px; margin-top: 5px;
-  }
-  .date-save-btn {
-    background: var(--blue); color: var(--white);
-    border: none; border-radius: 4px;
-    padding: 3px 10px; font-size: 11px; font-weight: 700;
-    cursor: pointer; font-family: 'DM Sans', sans-serif;
-    transition: opacity 0.15s;
-  }
+  .date-edit-actions { display: flex; gap: 4px; margin-top: 5px; }
+  .date-save-btn { background: var(--blue); color: var(--white); border: none; border-radius: 4px; padding: 3px 10px; font-size: 11px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
   .date-save-btn:hover { opacity: 0.85; }
-  .date-cancel-btn {
-    background: transparent; color: var(--dim);
-    border: 1px solid var(--border2);
-    border-radius: 4px;
-    padding: 3px 8px; font-size: 11px; font-weight: 500;
-    cursor: pointer; font-family: 'DM Sans', sans-serif;
-  }
-  .date-edit-icon {
-    font-size: 10px; color: var(--faint);
-    cursor: pointer; opacity: 0;
-    transition: opacity 0.15s;
-    margin-left: 4px;
-  }
+  .date-cancel-btn { background: transparent; color: var(--dim); border: 1px solid var(--border2); border-radius: 4px; padding: 3px 8px; font-size: 11px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .date-edit-icon { font-size: 10px; color: var(--faint); cursor: pointer; opacity: 0; transition: opacity 0.15s; margin-left: 4px; }
   .date-cell:hover .date-edit-icon { opacity: 1; }
 
-  /* saving state */
-  .saving-pulse {
-    animation: pulse 0.8s ease infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-  /* ── MILESTONES SECTION ── */
-  .deal-ms-toggle {
-    padding: 10px 20px;
-    border-top: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    user-select: none;
-    transition: background 0.15s;
-  }
+  .deal-ms-toggle { padding: 10px 20px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; transition: background 0.15s; }
   .deal-ms-toggle:hover { background: var(--bg); }
-  .deal-ms-toggle-label {
-    font-size: 11px; font-weight: 700;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--dim);
-    display: flex; align-items: center; gap: 7px;
-  }
+  .deal-ms-toggle-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); }
   .ms-chev { transition: transform 0.25s; font-size: 10px; color: var(--faint); }
   .deal-card.ms-open .ms-chev { transform: rotate(180deg); }
   .deal-ms-body { display: none; border-top: 1px solid var(--border); padding: 14px 20px; }
   .deal-card.ms-open .deal-ms-body { display: block; }
-
   .ms-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .ms-chip {
-    font-size: 11px; font-weight: 600;
-    padding: 4px 10px; border-radius: 20px;
-    border: 1px solid;
-    white-space: nowrap;
-  }
-  .ms-chip.done    { background: var(--blue-mid);   border-color: var(--blue-border);   color: var(--blue); }
-  .ms-chip.pending { background: var(--orange-mid);  border-color: var(--orange-border); color: var(--orange); }
+  .ms-chip { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; border: 1px solid; white-space: nowrap; }
+  .ms-chip.done    { background: var(--blue-mid);  border-color: var(--blue-border);  color: var(--blue); }
+  .ms-chip.pending { background: var(--orange-mid); border-color: var(--orange-border); color: var(--orange); }
 
-  /* ── EMPTY STATE ── */
-  .empty-state {
-    text-align: center; padding: 60px 24px;
-    background: var(--white); border: 1px solid var(--border2);
-    border-radius: 14px;
-  }
+  .empty-state { text-align: center; padding: 60px 24px; background: var(--white); border: 1px solid var(--border2); border-radius: 14px; }
   .empty-icon { font-size: 36px; margin-bottom: 14px; }
   .empty-title { font-size: 17px; font-weight: 700; color: var(--blue-dark); margin-bottom: 6px; }
   .empty-sub { font-size: 13px; color: var(--dim); font-weight: 300; margin-bottom: 20px; }
 
-  /* ── LOADING ── */
+  #noResults { display: none; text-align: center; padding: 40px 24px; background: var(--white); border: 1px solid var(--border2); border-radius: 14px; }
+  .no-results-title { font-size: 15px; font-weight: 700; color: var(--blue-dark); margin-bottom: 6px; }
+  .no-results-sub { font-size: 13px; color: var(--dim); font-weight: 300; }
+
   #loadingState { text-align: center; padding: 60px 24px; }
-  .loading-spinner {
-    width: 32px; height: 32px;
-    border: 3px solid var(--blue-tint);
-    border-top-color: var(--blue);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto 16px;
-  }
+  .loading-spinner { width: 32px; height: 32px; border: 3px solid var(--blue-tint); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading-label { font-size: 13px; color: var(--dim); font-weight: 300; }
 
-  /* ── TOAST ── */
-  .toast {
-    position: fixed; bottom: 24px; right: 24px;
-    background: var(--blue-dark); color: var(--white);
-    border-radius: 10px; padding: 12px 18px;
-    font-size: 13px; font-weight: 500;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-    transform: translateY(80px); opacity: 0;
-    transition: all 0.3s ease;
-    z-index: 200;
-    display: flex; align-items: center; gap: 8px;
-    max-width: 320px;
-  }
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--blue-dark); color: var(--white); border-radius: 10px; padding: 12px 18px; font-size: 13px; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,0.18); transform: translateY(80px); opacity: 0; transition: all 0.3s ease; z-index: 200; max-width: 320px; }
   .toast.show { transform: translateY(0); opacity: 1; }
   .toast.error { background: var(--red); }
   .toast.success { background: var(--green); }
 
   @media (max-width: 700px) {
-    .stats-bar { gap: 16px; overflow-x: auto; }
     .dates-grid-inner { grid-template-columns: 1fr 1fr; }
-    .deal-card-top { flex-wrap: wrap; }
     .header { padding: 0 16px; }
     .main { padding: 16px; }
+    .filter-bar { padding: 12px 16px; }
+    .filter-results { display: none; }
   }
 </style>
 </head>
 <body>
 
-<!-- PASSWORD GATE -->
+<!-- GATE -->
 <div id="gate">
   <div class="gate-card">
     <div class="gate-logo">
@@ -458,27 +209,35 @@
     </div>
     <div class="header-title">Client Portal Dashboard</div>
   </div>
-  <div class="header-right">
+  <div>
     <a href="/admin" class="new-deal-btn">＋ New Deal</a>
   </div>
 </div>
 
-<!-- STATS BAR -->
+<!-- STATS -->
 <div class="stats-bar">
-  <div class="stat">
-    <div class="stat-num" id="statTotal">—</div>
-    <div class="stat-label">Active Deals</div>
-  </div>
+  <div class="stat"><div class="stat-num" id="statTotal">—</div><div class="stat-label">Total Deals</div></div>
   <div class="stat-divider"></div>
-  <div class="stat">
-    <div class="stat-num" id="statMilestones">—</div>
-    <div class="stat-label">Milestones Completed</div>
-  </div>
+  <div class="stat"><div class="stat-num" id="statFiltered">—</div><div class="stat-label">Showing</div></div>
   <div class="stat-divider"></div>
-  <div class="stat">
-    <div class="stat-num" id="statAvg">—</div>
-    <div class="stat-label">Avg. Progress</div>
+  <div class="stat"><div class="stat-num" id="statMilestones">—</div><div class="stat-label">Milestones Completed</div></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><div class="stat-num" id="statAvg">—</div><div class="stat-label">Avg. Progress</div></div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-search-wrap">
+    <span class="filter-search-icon">🔍</span>
+    <input class="filter-search" type="text" id="searchInput" placeholder="Search by client name or address…" oninput="applyFilters()" />
   </div>
+  <div class="filter-agent-wrap">
+    <select class="filter-agent" id="agentFilter" onchange="applyFilters()" disabled>
+      <option value="">Loading agents…</option>
+    </select>
+  </div>
+  <button class="filter-clear" id="clearBtn" onclick="clearFilters()">✕ Clear Filters</button>
+  <div class="filter-results" id="filterResults"></div>
 </div>
 
 <!-- MAIN -->
@@ -490,12 +249,9 @@
     </div>
   </div>
 
-  <div id="loadingState">
-    <div class="loading-spinner"></div>
-    <div class="loading-label">Loading deals…</div>
-  </div>
-
+  <div id="loadingState"><div class="loading-spinner"></div><div class="loading-label">Loading deals…</div></div>
   <div class="deals-grid" id="dealsGrid" style="display:none;"></div>
+  <div id="noResults"><div class="no-results-title">No deals match your filters</div><div class="no-results-sub">Try a different search or select a different agent.</div></div>
   <div id="emptyState" style="display:none;">
     <div class="empty-state">
       <div class="empty-icon">📋</div>
@@ -506,18 +262,13 @@
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-  // ─── CONFIG ───────────────────────────────────────
   const SUPABASE_URL      = 'https://kfungkkwkckltapnkyjj.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmdW5na2t3a2NrbHRhcG5reWpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5Mjc3NTcsImV4cCI6MjA4OTUwMzc1N30.TZa2NPYDgQjHlhQTUt9u9AytrtEnP1MADoHInCWbQm4';
 
-  // ─── SET YOUR TEAM PASSWORD HERE ──────────────────
-  // Change this to whatever password you want your team to use.
-  // For a stronger setup, move this to a Netlify environment variable
-  // and validate via a function — but this works well for small teams.
+  // ── CHANGE THIS PASSWORD ──────────────────────────
   const DASHBOARD_PASSWORD = 'lockstep2026';
 
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -536,13 +287,15 @@
     'Appraisal','Clear to Close','Closing Day',
   ];
 
-  // ─── PASSWORD GATE ────────────────────────────────
+  let allDeals = [];
+
+  // ─── GATE ─────────────────────────────────────────
   function checkPassword() {
     const val = document.getElementById('gateInput').value;
     if (val === DASHBOARD_PASSWORD) {
       document.getElementById('gate').style.display = 'none';
       sessionStorage.setItem('ko-dash-auth', '1');
-      loadDeals();
+      init();
     } else {
       document.getElementById('gateError').style.display = 'block';
       document.getElementById('gateInput').value = '';
@@ -550,116 +303,145 @@
     }
   }
 
-  // Skip gate if already authenticated this session
   if (sessionStorage.getItem('ko-dash-auth') === '1') {
     document.getElementById('gate').style.display = 'none';
-    loadDeals();
+    init();
   }
 
-  // ─── LOAD ALL DEALS ───────────────────────────────
-  async function loadDeals() {
-    const { data: deals, error } = await sb
-      .from('transactions')
-      .select('*, milestones(*), key_dates(*)')
-      .order('created_at', { ascending: false });
+  // ─── INIT: LOAD AGENTS + DEALS IN PARALLEL ────────
+  async function init() {
+    const [agentsResult, dealsResult] = await Promise.all([
+      sb.from('agents').select('name').eq('active', true).order('sort_order', { ascending: true }),
+      sb.from('transactions').select('*, milestones(*), key_dates(*)').order('created_at', { ascending: false })
+    ]);
+
+    // Build agent dropdown from agents table
+    const agentSel = document.getElementById('agentFilter');
+    if (!agentsResult.error && agentsResult.data?.length) {
+      agentSel.innerHTML = '<option value="">All Agents</option>';
+      agentsResult.data.forEach(a => {
+        const opt = document.createElement('option');
+        opt.value = a.name; opt.textContent = a.name;
+        agentSel.appendChild(opt);
+      });
+      agentSel.disabled = false;
+    } else {
+      agentSel.innerHTML = '<option value="">All Agents</option>';
+      agentSel.disabled = false;
+    }
 
     document.getElementById('loadingState').style.display = 'none';
 
-    if (error) {
-      showToast('Failed to load deals: ' + error.message, 'error');
-      return;
-    }
+    if (dealsResult.error) { showToast('Failed to load deals: ' + dealsResult.error.message, 'error'); return; }
 
-    if (!deals || deals.length === 0) {
+    const deals = dealsResult.data || [];
+
+    if (deals.length === 0) {
       document.getElementById('emptyState').style.display = 'block';
-      updateStats([]);
-      return;
+      updateStats([], 0); return;
     }
 
+    allDeals = deals;
     document.getElementById('dealsGrid').style.display = 'flex';
-    document.getElementById('dealCount').textContent = deals.length;
-    updateStats(deals);
+    document.getElementById('statTotal').textContent   = deals.length;
+    document.getElementById('dealCount').textContent   = deals.length;
     deals.forEach(deal => renderDeal(deal));
+    updateStats(deals, deals.length);
+  }
+
+  // ─── FILTERS ──────────────────────────────────────
+  function applyFilters() {
+    const search  = document.getElementById('searchInput').value.trim().toLowerCase();
+    const agent   = document.getElementById('agentFilter').value;
+    const hasFilter = search.length > 0 || agent !== '';
+    document.getElementById('clearBtn').classList.toggle('visible', hasFilter);
+
+    let visible = 0;
+    allDeals.forEach(deal => {
+      const card = document.getElementById('card-' + deal.deal_id);
+      if (!card) return;
+      const matchSearch = !search || deal.client_name.toLowerCase().includes(search) || (deal.address||'').toLowerCase().includes(search);
+      const matchAgent  = !agent  || deal.agent_name === agent;
+      const show = matchSearch && matchAgent;
+      card.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+
+    document.getElementById('noResults').style.display  = visible === 0 ? 'block' : 'none';
+    document.getElementById('filterResults').textContent = hasFilter ? `Showing ${visible} of ${allDeals.length} deals` : '';
+    document.getElementById('statFiltered').textContent  = visible;
+    document.getElementById('dealCount').textContent     = visible;
+
+    const visibleDeals = allDeals.filter(d => {
+      const c = document.getElementById('card-' + d.deal_id);
+      return c && !c.classList.contains('hidden');
+    });
+    updateStats(visibleDeals, visible);
+  }
+
+  function clearFilters() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('agentFilter').value = '';
+    applyFilters();
   }
 
   // ─── STATS ────────────────────────────────────────
-  function updateStats(deals) {
-    const total = deals.length;
+  function updateStats(deals, count) {
     let totalDone = 0;
-    deals.forEach(d => {
-      const done = (d.milestones || []).filter(m => m.completed && m.milestone_idx < 16).length;
-      totalDone += done;
-    });
-    const avg = total > 0 ? Math.round(totalDone / total / 16 * 100) : 0;
-    document.getElementById('statTotal').textContent      = total;
+    deals.forEach(d => { totalDone += (d.milestones||[]).filter(m => m.completed && m.milestone_idx < 16).length; });
+    const avg = deals.length > 0 ? Math.round(totalDone / deals.length / 16 * 100) : 0;
     document.getElementById('statMilestones').textContent = totalDone;
     document.getElementById('statAvg').textContent        = avg + '%';
+    document.getElementById('statFiltered').textContent   = count !== undefined ? count : deals.length;
   }
 
-  // ─── RENDER DEAL CARD ─────────────────────────────
+  // ─── RENDER DEAL ──────────────────────────────────
   function renderDeal(deal) {
     const milestones = deal.milestones || [];
     const keyDates   = deal.key_dates  || [];
+    const doneCount  = milestones.filter(m => m.completed && m.milestone_idx < 16).length;
+    const pct        = Math.round(doneCount / 16 * 100);
 
-    const timelineMilestones = milestones.filter(m => m.milestone_idx < 16);
-    const doneCount = timelineMilestones.filter(m => m.completed).length;
-    const totalMs   = 16;
-    const pct       = Math.round(doneCount / totalMs * 100);
-    const isComplete = doneCount === totalMs;
-
-    const initials = deal.client_name
-      .split(/[\s&]+/)
-      .filter(Boolean)
-      .slice(0, 2)
-      .map(w => w[0].toUpperCase())
-      .join('');
+    const initials = deal.client_name.split(/[\s&]+/).filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join('');
 
     const card = document.createElement('div');
     card.className = 'deal-card';
     card.id = 'card-' + deal.deal_id;
 
     card.innerHTML = `
-      <!-- TOP -->
       <div class="deal-card-top">
         <div class="deal-avatar">${initials}</div>
         <div class="deal-info">
           <div class="deal-name">${escHtml(deal.client_name)}</div>
           <div class="deal-address">${deal.address ? escHtml(deal.address) : '<span style="font-style:italic;color:var(--faint);">No address entered</span>'}</div>
-          <div class="deal-slug">${deal.deal_id}</div>
+          <div class="deal-meta">
+            <div class="deal-slug">${deal.deal_id}</div>
+            ${deal.agent_name ? `<div class="deal-agent-tag">${escHtml(deal.agent_name)}</div>` : ''}
+          </div>
         </div>
         <div class="deal-actions">
           <button class="btn-icon" title="Copy portal URL" onclick="copyPortal('${escHtml(deal.portal_url)}', this)">📋</button>
           <a class="btn-open-portal" href="${escHtml(deal.portal_url)}" target="_blank">↗ Open Portal</a>
         </div>
       </div>
-
-      <!-- PROGRESS -->
       <div class="deal-progress">
         <div class="progress-meta">
           <div class="progress-label">Milestone Progress</div>
-          <div class="progress-count">${doneCount} / ${totalMs} complete</div>
+          <div class="progress-count">${doneCount} / 16 complete</div>
         </div>
         <div class="progress-track">
-          <div class="progress-fill ${isComplete ? 'complete' : ''}" style="width:${pct}%"></div>
+          <div class="progress-fill ${doneCount===16?'complete':''}" style="width:${pct}%"></div>
         </div>
       </div>
-
-      <!-- KEY DATES TOGGLE -->
       <div class="deal-dates-toggle" onclick="toggleDates('${deal.deal_id}')">
-        <div class="deal-dates-toggle-label">
-          📅 Key Dates
-        </div>
+        <div class="deal-dates-toggle-label">📅 Key Dates</div>
         <span class="dates-chev">▼</span>
       </div>
       <div class="deal-dates-body" id="dates-${deal.deal_id}">
         <div class="dates-grid-inner" id="dates-grid-${deal.deal_id}"></div>
       </div>
-
-      <!-- MILESTONES TOGGLE -->
       <div class="deal-ms-toggle" onclick="toggleMs('${deal.deal_id}')">
-        <div class="deal-ms-toggle-label">
-          ✅ Milestone Detail
-        </div>
+        <div class="deal-ms-toggle-label">✅ Milestone Detail</div>
         <span class="ms-chev">▼</span>
       </div>
       <div class="deal-ms-body" id="ms-${deal.deal_id}">
@@ -668,15 +450,11 @@
     `;
 
     document.getElementById('dealsGrid').appendChild(card);
-
-    // Render key dates
     renderDates(deal.deal_id, keyDates);
 
-    // Render milestones
     const chipsEl = document.getElementById('ms-chips-' + deal.deal_id);
     MILESTONE_NAMES.forEach((name, idx) => {
-      const ms   = milestones.find(m => m.milestone_idx === idx);
-      const done = ms?.completed || false;
+      const done = milestones.find(m => m.milestone_idx === idx)?.completed || false;
       const chip = document.createElement('div');
       chip.className = 'ms-chip ' + (done ? 'done' : 'pending');
       chip.textContent = (done ? '✓ ' : '○ ') + name;
@@ -684,123 +462,89 @@
     });
   }
 
-  // ─── RENDER KEY DATES ─────────────────────────────
+  // ─── DATES ────────────────────────────────────────
   function renderDates(dealId, keyDates) {
     const grid = document.getElementById('dates-grid-' + dealId);
     grid.innerHTML = '';
-
     DATE_LABELS.forEach(label => {
       const existing = keyDates.find(d => d.label === label);
-      const val      = existing?.date_value || null;
-      const rowId    = existing?.id || null;
-
+      const val = existing?.date_value || null;
+      const rowId = existing?.id || null;
       const cell = document.createElement('div');
       cell.className = 'date-cell';
-      cell.id = `dcell-${dealId}-${label.replace(/\s+/g,'_')}`;
-
       cell.innerHTML = `
         <div class="date-cell-label">${label}</div>
-        <div class="date-cell-val ${val ? '' : 'tbd'}" id="dval-${dealId}-${label.replace(/\s+/g,'_')}">
-          ${val || 'TBD'}
-          <span class="date-edit-icon" onclick="editDate('${dealId}','${label}','${rowId || ''}','${escHtml(val || '')}')">✏️</span>
-        </div>
-      `;
-
+        <div class="date-cell-val ${val?'':'tbd'}" id="dval-${dealId}-${label.replace(/\s+/g,'_')}">
+          ${val||'TBD'}
+          <span class="date-edit-icon" onclick="editDate('${dealId}','${label}','${rowId||''}','${escHtml(val||'')}')">✏️</span>
+        </div>`;
       grid.appendChild(cell);
     });
   }
 
-  // ─── EDIT DATE INLINE ─────────────────────────────
   function editDate(dealId, label, rowId, currentVal) {
-    const key  = label.replace(/\s+/g,'_');
+    const key = label.replace(/\s+/g,'_');
     const valEl = document.getElementById(`dval-${dealId}-${key}`);
     if (!valEl) return;
-
-    valEl.innerHTML = `
-      <div style="width:100%;">
-        <input class="date-edit-input" type="text" id="dinput-${dealId}-${key}"
-               placeholder="e.g. April 15, 2026" value="${escHtml(currentVal)}" />
-        <div class="date-edit-actions">
-          <button class="date-save-btn" onclick="saveDate('${dealId}','${label}','${rowId}')">Save</button>
-          <button class="date-cancel-btn" onclick="cancelEditDate('${dealId}','${label}','${escHtml(currentVal)}')">Cancel</button>
-        </div>
-      </div>
-    `;
+    valEl.innerHTML = `<div style="width:100%;">
+      <input class="date-edit-input" type="text" id="dinput-${dealId}-${key}" placeholder="e.g. April 15, 2026" value="${escHtml(currentVal)}" />
+      <div class="date-edit-actions">
+        <button class="date-save-btn" onclick="saveDate('${dealId}','${label}','${rowId}')">Save</button>
+        <button class="date-cancel-btn" onclick="cancelEditDate('${dealId}','${label}','${escHtml(currentVal)}')">Cancel</button>
+      </div></div>`;
     document.getElementById(`dinput-${dealId}-${key}`)?.focus();
   }
 
   function cancelEditDate(dealId, label, originalVal) {
-    const key   = label.replace(/\s+/g,'_');
+    const key = label.replace(/\s+/g,'_');
     const valEl = document.getElementById(`dval-${dealId}-${key}`);
     if (!valEl) return;
     valEl.className = 'date-cell-val ' + (originalVal ? '' : 'tbd');
-    valEl.innerHTML = `${originalVal || 'TBD'}<span class="date-edit-icon" onclick="editDate('${dealId}','${label}','','${escHtml(originalVal)}')">✏️</span>`;
+    valEl.innerHTML = `${originalVal||'TBD'}<span class="date-edit-icon" onclick="editDate('${dealId}','${label}','','${escHtml(originalVal)}')">✏️</span>`;
   }
 
   async function saveDate(dealId, label, rowId) {
-    const key     = label.replace(/\s+/g,'_');
-    const input   = document.getElementById(`dinput-${dealId}-${key}`);
-    const newVal  = input?.value?.trim() || '';
+    const key = label.replace(/\s+/g,'_');
+    const input = document.getElementById(`dinput-${dealId}-${key}`);
+    const newVal = input?.value?.trim() || '';
     const saveBtn = input?.parentElement?.querySelector('.date-save-btn');
-
     if (saveBtn) { saveBtn.textContent = 'Saving…'; saveBtn.disabled = true; }
-
     try {
-      const res  = await fetch('/.netlify/functions/update-dates', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ deal_id: dealId, label, date_value: newVal || null, row_id: rowId || null }),
-      });
+      const res  = await fetch('/.netlify/functions/update-dates', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ deal_id: dealId, label, date_value: newVal||null, row_id: rowId||null }) });
       const data = await res.json();
-
-      if (!res.ok || !data.ok) throw new Error(data.error || 'Save failed');
-
-      // Update display
+      if (!res.ok || !data.ok) throw new Error(data.error||'Save failed');
       const valEl = document.getElementById(`dval-${dealId}-${key}`);
       if (valEl) {
-        const newRowId = data.row_id || rowId;
-        valEl.className = 'date-cell-val ' + (newVal ? '' : 'tbd');
-        valEl.innerHTML = `${newVal || 'TBD'}<span class="date-edit-icon" onclick="editDate('${dealId}','${label}','${newRowId}','${escHtml(newVal)}')">✏️</span>`;
+        valEl.className = 'date-cell-val ' + (newVal?'':'tbd');
+        valEl.innerHTML = `${newVal||'TBD'}<span class="date-edit-icon" onclick="editDate('${dealId}','${label}','${data.row_id||rowId}','${escHtml(newVal)}')">✏️</span>`;
       }
       showToast('Date updated ✓', 'success');
-
-    } catch (err) {
+    } catch(err) {
       showToast('Failed to save: ' + err.message, 'error');
       if (saveBtn) { saveBtn.textContent = 'Save'; saveBtn.disabled = false; }
     }
   }
 
-  // ─── TOGGLES ──────────────────────────────────────
-  function toggleDates(dealId) {
-    document.getElementById('card-' + dealId).classList.toggle('dates-open');
-  }
-  function toggleMs(dealId) {
-    document.getElementById('card-' + dealId).classList.toggle('ms-open');
-  }
+  function toggleDates(id) { document.getElementById('card-'+id).classList.toggle('dates-open'); }
+  function toggleMs(id)    { document.getElementById('card-'+id).classList.toggle('ms-open'); }
 
-  // ─── COPY PORTAL URL ─────────────────────────────
   function copyPortal(url, btn) {
     navigator.clipboard.writeText(url).then(() => {
-      const orig = btn.textContent;
-      btn.textContent = '✓';
-      btn.classList.add('copied');
+      const orig = btn.textContent; btn.textContent = '✓'; btn.classList.add('copied');
       setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
     });
   }
 
-  // ─── TOAST ───────────────────────────────────────
   let toastTimer;
-  function showToast(msg, type = '') {
+  function showToast(msg, type='') {
     const el = document.getElementById('toast');
-    el.textContent = msg;
-    el.className = 'toast show' + (type ? ' ' + type : '');
+    el.textContent = msg; el.className = 'toast show' + (type?' '+type:'');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => { el.className = 'toast'; }, 3000);
   }
 
-  // ─── UTILS ───────────────────────────────────────
   function escHtml(str) {
-    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
 </script>
 </body>
